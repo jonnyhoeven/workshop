@@ -344,23 +344,50 @@ kubectl apply -f ./namespace/argocd/repository/argocd.Repository.yaml -n argocd
 
 - The [repository](https://argocd.k3d.local/settings/repos) is now visible in the argocd UI.
 
-- The [application](./namespace/argocd/application/cat-app.Application.yaml) file is also already in the repository, update
+- The [application](./namespace/argocd/application/cat-app.Application.yaml) file is also already in the repository,
+  update
   the repo url to your forked repo and apply the application.
 
 ```bash
 kubectl apply -f ./namespace/argocd/application/cat-app.Application.yaml -n argocd
 ```
 
-
 - Commit and push the change to your branch.
 
-- Apply the application file to argocd.
+- Apply the application to argocd.
 
 ```bash
 kubectl apply -f ./namespace/argocd/application/cat-app.application.yaml -n argocd
 ```
 
+- Browse to [https://argocd.k3d.local/applications/argocd/cat-app](https://argocd.k3d.local/applications/argocd/cat-app)
+- Press the sync button to sync the application with the repository.
+- Your cat app is now deployed using argocd.
+
+### ArgoCD can Git Ops itself
+
+We just deployed the cat app using ArgoCD, but we still needed kubectl to apply the application. ArgoCD can also manage
+itself using GitOps, so we can deploy the cat-app by adding a new file in the `namespace/argocd/application` folder.
+
+- First edit [argocd.application.yaml](./namespace/argocd/application/argocd.Application.yaml) and change `repoURL` to
+  your
+  fork, then apply the application manifest.
+
 ```bash
+kubectl apply -f ./namespace/argocd/application/argocd.Application.yaml -n argocd
+```
+
+Since we added the application to the repository and sync is enabled in the ArgoCD application, it will automatically
+maintain, prune and heal the argocd namespace based on the repository state.
+
+- Try deleting the cat-app in the ArgoCD gui, and see what happens.
+
+Argo cd Notice that the cat-app is missing and will automatically recreate it.
+The cat-app is still running, because the deployment is still in the kubernetes cluster.
+
+- Edit the cat-app application yaml, and uncomment lines below  `syncPolicy` to enable auto sync on the cat app.
+
+- Commit and push the change to your fork, to enable the same sync policy on the cat-app.
 
 ### Delete the cluster
 
