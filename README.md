@@ -387,7 +387,16 @@ The cat-app is still running, because the deployment is still in the kubernetes 
 
 - Edit the cat-app application yaml, and uncomment lines below  `syncPolicy` to enable auto sync on the cat app.
 
-- Commit and push the change to your fork, to enable the same sync policy on the cat-app.
+- Commit and push the changes to your fork
+
+### Cloud Native Postgres
+
+Since we took our time to automate our GitOps, we are already reaping benefits of the git ops approach. We can now
+easily deploy a cloud native database using the same approach. In fact, we already have
+a [Postgres](./namespace/argocd/application/postgres.Application.yaml) application file in the repository.
+And since autosync is enabled, the postgres database cluster was deployed automatically.
+
+See [cluster-example.Cluster.yaml](namespace/cnpg-system/cluster-example.Cluster.yaml) for the cluster configuration.
 
 ### Delete the cluster
 
