@@ -391,10 +391,9 @@ The cat-app is still running, because the deployment is still in the kubernetes 
 
 ### Cloud Native Postgres
 
-Since we took our time to automate our GitOps, we are already reaping benefits of the git ops approach. We can now
-easily deploy a cloud native database using the same approach. In fact, we already have
-a [Postgres](./namespace/argocd/application/postgres.Application.yaml) application file in the repository.
-And since autosync is enabled, the postgres database cluster was deployed automatically.
+Since we took our time to automate our GitOps, We can easily deploy a cloud native database using the same approach.
+In fact, we already have a [Postgres](./namespace/argocd/application/postgres.Application.yaml) application file.
+Since autosync is enabled, the postgres database cluster was deployed automatically.
 
 See [cluster-example.Cluster.yaml](namespace/cnpg-system/cluster-example.Cluster.yaml) for the cluster configuration.
 
