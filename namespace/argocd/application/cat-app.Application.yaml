@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cat-app
+  namespace: argocd
+  labels:
+    name: cat-app
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jonnyhoeven/argocd-gitops-workshop.git
+    targetRevision: HEAD
+    path: namespace/cat-app
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-app
+  info:
+    - name: 'Cat App'
+      value: 'Cats Do Moo!'
+  syncPolicy:
+    # automated:
+    #  prune: false
+    #  selfHeal: false
+    #  allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+  revisionHistoryLimit: 1

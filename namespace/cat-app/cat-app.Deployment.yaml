@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cat-app
+  name: cat-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cat-app
+  template:
+    metadata:
+      labels:
+        app: cat-app
+    spec:
+      containers:
+        - name: cat-app
+          image: nginx
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
