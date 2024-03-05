@@ -1,6 +1,12 @@
 ## The Workshop
 
-Let's start doing stuff ourselves!
+We're going to deploy a simple application to a Kubernetes cluster using kubectl, 
+and then we'll deploy the same application using ArgoCD along the way we'll be checking out multiple tools to configure 
+a kubernetes cluster. We'll end up with a cluster you can change or install more stuff to from your git repository.
+
+Let's get started
+
+first open up a terminal to run linux/bash commands.
 
 ## Requirements
 
@@ -21,6 +27,7 @@ sudo apt-get install -y apt-transport-https ca-certificates curl
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 # This overwrites any existing configuration in /etc/apt/sources.list.d/kubernetes.list
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
 sudo apt-get update
 sudo apt-get install -y kubectl
 ```
@@ -48,7 +55,7 @@ guide: [Install on Linux](https://docs.docker.com/desktop/install/linux-install/
 Lens is a Kubernetes IDE that allows you to manage and monitor your clusters, and deploy.
 
 Recently some features were removed from Open Lens. Plugins replacing this functionality aren't yet working properly.
-So for now, it's recommended to use the Mirantis version of Lens.
+So for now, it's recommended to use the Mirantis Free version of Lens.
 
 - [Lens](https://k8slens.dev/desktop.html) (From Mirantis)
 - [Open Lens](https://flathub.org/apps/dev.k8slens.OpenLens) (Open Source version)
