@@ -101,7 +101,7 @@ You can get the config from k3d by running:
 k3d kubeconfig get workshop > kubeconfig.yaml
 ```
 
-- Update your `~/.kube/config` file with the newly generated [kubeconfig.yaml](kubeconfig.yaml) file.
+- Update your `~/.kube/config` file with the newly generated `kubeconfig.yaml` file.
 
 e.g. on linux:
 
@@ -383,7 +383,7 @@ kubectl apply -f ./namespace/argocd/repository/argocd.Repository.yaml -n argocd
 
 - The [repository](https://argocd.k3d.local/settings/repos) is now visible in the ArgoCD UI.
 
-- The [application](./namespace/argocd/application/cat-app.Application.yaml) file is also already in the repository,
+- The [application](namespace/argocd/application/cat-app.Application.yaml) file is also already in the repository,
   update
   the repo url to your forked repo and apply the application.
 
