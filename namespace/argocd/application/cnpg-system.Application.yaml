@@ -17,10 +17,10 @@ spec:
     namespace: cnpg-system
   syncPolicy:
     automated:
-      prune: false
+      prune: true
       selfHeal: true
-      allowEmpty: false
+      allowEmpty: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true
+      #- ServerSideApply=true
   revisionHistoryLimit: 5
