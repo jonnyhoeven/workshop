@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+  labels:
+    name: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jonnyhoeven/argocd-gitops-workshop.git
+    targetRevision: HEAD
+    path: namespace/argocd
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  info:
+    - name: 'This is ArgoCD'
+      value: 'Managing ArgoCD with ArgoCD!'
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+  revisionHistoryLimit: 1
