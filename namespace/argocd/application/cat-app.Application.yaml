@@ -20,10 +20,10 @@ spec:
     - name: 'Cat App'
       value: 'Cats Do Moo!'
   syncPolicy:
-    # automated:
-    #  prune: false
-    #  selfHeal: false
-    #  allowEmpty: false
+    automated:
+      prune: false
+      selfHeal: true
+      allowEmpty: false
     syncOptions:
       - CreateNamespace=true
   revisionHistoryLimit: 1
