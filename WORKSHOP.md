@@ -14,7 +14,7 @@ We'll need some tools to get our cluster running.
 
 ### Kubectl
 
-Kubectl is a command line tool for controlling Kubernetes clusters. It is used to deploy, inspect and
+Kubectl is a command line tool for controlling Kubernetes clusters. It's used to deploy, inspect and
 manage cluster resources, and view logs.
 
 [Reference](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
@@ -50,11 +50,11 @@ sudo apt-get update
 sudo apt-get install -y kubectl
 ```
 
-### K3D (K3s in Docker) cluster setup
+### K3D (K3S in Docker) cluster setup
 
-K3D is a lightweight wrapper to run k3s (Rancher Lab's minimal Kubernetes distribution) in docker. It is a single binary
-that deploys a k3s server in a docker container. K3D makes it very easy to create single and multi-node k3s clusters in
-docker, and it is also possible to run multiple clusters at the same time.
+K3D is a lightweight wrapper to run K3S (Rancher Lab's minimal Kubernetes distribution) in docker. I's a single binary
+that deploys a K3S server in a docker container. K3D makes it very easy to create single and multi-node K3S clusters in
+docker, and it possible to run multiple clusters at the same time.
 
 [Reference](https://k3d.io/v5.6.0/#quick-start)
 
@@ -76,7 +76,7 @@ sudo apt install docker.io
 
 ### Lens
 
-Lens is a Kubernetes IDE that allows you to manage and monitor your clusters, and deploy.
+Lens is a Kubernetes IDE that allows you to manage and monitor and manipulate your clusters.
 
 Recently some features were removed from Open Lens. Plugins replacing this functionality aren't yet working properly.
 So for now, it's recommended to use the Mirantis Free version of Lens.
@@ -88,7 +88,7 @@ So for now, it's recommended to use the Mirantis Free version of Lens.
 
 [Reference](https://k3d.io/v5.3.0/usage/commands/k3d_cluster_create/)
 
-We'll be creating 1 server and 2 agents/workers for our cluster.
+We'll be creating 1 server and 2 agents for our cluster.
 Normally for high availability you'll want to have at least 2 control planes, each with 2 agents.
 but for this example we'll keep it simple.
 
@@ -107,19 +107,19 @@ sudo k3d cluster list
 ## Access the cluster using kubectl
 
 Kubeconfig is a file that holds information about cluster, including the hostname, certificate authority, and
-authentication information. It's installed by kubectl at `~/.kube/config` by default, and can be used by other
+authentication information. It's located at `~/.kube/config` by default, and can be used by other
 applications to connect to the cluster. Keep this file secure, it's the **key** to your cluster.
 
 In normal situations you'll need to obtain the kubeconfig file from one of the Kubernetes cluster control nodes,
 if running locally K3D can provide the kubeconfig file.
 
-You can get the config from k3d by running:
+You can get the config from K3D by running:
 
 ```bash
 sudo k3d kubeconfig get workshop > kubeconfig.yaml
 ```
 
-- Update your `~/.kube/config` file with the newly generated `kubeconfig.yaml` file.
+- Update your `~/.kube/config` file with the newly generated [kubeconfig.yaml](./kubeconfig.yaml) file.
 
 e.g. on linux:
 
@@ -145,24 +145,25 @@ kubectl get nodes
 
 ## Access the cluster using Lens
 
-Setup Lens to use the new cluster by adding a new cluster from kubeconfig.
+Setup Lens to use the new cluster by adding a new cluster from the [kubeconfig.yaml](./kubeconfig.yaml) file.
 
-Click on `Catalog` (Top left, second from top) → `Clusters` → `Add Cluster (+) icon` → `Add Cluster from Kubeconfig`
-→ Paste the contents of your kubeconfig file → `Add Clusters` or import the kubeconfig file using
-the `Add Cluster from Kubeconfig` option.
+- Click on `Catalog` (Top left, second from top) → `Clusters` → `Add Cluster (+) icon` → `Add Cluster from Kubeconfig`
+  → Paste the contents of your kubeconfig file → `Add Clusters`
+
+- Or import the kubeconfig file using the `Add Cluster from Kubeconfig` option.
 
 Now you can access the `k3d-workshop` cluster using Lens.
 
-Browse around, check the `nodes`, `namespaces`, and `pods` sections.
+Browse around, check the `Nodes`, `Namespaces`, `Custom Resource Definitions` and `Pods`.
 
 ## Some notes about Namespaces
 
 Namespaces are methods to divide cluster resources between multiple users (via resource quota) and multiple projects (
-via
-separation of resources). They are intended for use in environments with many users spread across multiple teams, or
-projects. Namespaces are not a security feature, to isolate different users or namespaces from each other there are
-addons like
-[Loft](https://loft.sh/) that leverages RBAC (Role based account control) to securely isolate namespaces across teams.
+via separation of resources). They are intended for use in environments with many users spread across multiple teams, or
+projects. Namespaces are not a security feature, to isolate different users or namespaces from each other we need tools
+like
+[Loft](https://loft.sh/) that leverage RBAC (Role based account control) to securely isolate namespaces
+across teams.
 
 By default, Kubernetes starts with four initial namespaces:
 
@@ -176,12 +177,11 @@ kubectl get namespaces
 - `kube-public`, This namespace is created automatically and is readable by all users (including those not
   authenticated).
 - `kube-node-lease`, This namespace is used for the lease objects associated with each `node` which improves the
-  performance
-  of the `node` heartbeats as the cluster scales.
+  performance of the `node` heartbeats as the cluster scales.
 
 ## Create your own namespace
 
-Let's create a new namespace to work with and deploy an application to it.
+Let's create a new namespace and deploy an application to it.
 Let's call it `workshop`.
 
 ```bash
@@ -193,8 +193,8 @@ kubectl create namespace workshop
 We'll deploy a simple nginx web server to our cluster.
 
 `-n` or `--namespace` is used to specify the namespace to deploy the application to.
-If you don't provide a namespace, the application will be deployed to the `default` namespace by default.
-Resulting in hard to manage and hard to find resources.
+If you don't provide a namespace, the application will deploy to the `default` namespace.
+Resulting in hard to manage and hard to find resource manifests.
 
 ```bash
 kubectl create deployment nginx --image=nginx -n workshop
@@ -221,7 +221,7 @@ kubectl get pod -n workshop
 ```
 
 - Find the `deployment` in lens and check the `pod` status.
-  As you can see, the `deployment` is running and the `pod` is up and running.
+  As you can see, the `deployment` and `pod` replica is up and running.
 
 - Try deleting the `pod` and see what happens.
 
@@ -240,11 +240,10 @@ kubectl get pod -n workshop
 
 The `pod` is running again, but now it's got a different name.
 
-It's important to note that the `deployment` is the object that manages the `pod`, and the `pod` is the object that runs
-one or more containers.
+It's important to note that the `deployment` manifest manages the `pod`, and a `pod` can be replicated.
 
 It's recommended to use `Evict` or `Taint` instead of deleting definitions, to avoid downtime.
-This will result in kubernetes creating a new `pod` and wait for it to be ready before deleting the old evicted `pod`.
+This will result in kubernetes creating a new `pod` and wait for it to be ready before deleting the old `evicted pod`.
 
 - Delete the `deployment` and check the `pod` status again.
 
@@ -256,7 +255,7 @@ kubectl delete deployment nginx -n workshop
 kubectl get pod -n workshop
 ```
 
-Without the declaration for the `deployment`, the `pod` is also deleted.
+Without the `deployment` manifest with a minimal `pod` replica count, the `pod` gets removed.
 
 - Clean up the namespace
 
@@ -264,14 +263,14 @@ Without the declaration for the `deployment`, the `pod` is also deleted.
 kubectl delete namespace workshop
 ```
 
-### Deploy using a manifest files from code
+### Deploy using manifest files from code
 
 Normally you'll want to deploy using a manifest file, so you can keep track of your `deployments` and
-easily replicate them across different clusters. With version control to keep track of changes.
+easily replicate them across different clusters.
 
-__Before we start make sure you're in the correct working directory__
+__Before starting make sure you're in the correct working directory__
 
-- Create the `cat-app` namespace again using kubectl:
+- Create the `cat-app` namespace using kubectl:
 
 ```bash
 kubectl create namespace cat-app
@@ -285,7 +284,7 @@ kubectl apply -f ./namespace/cat-app/cat-app.Service.yaml -n cat-app
 kubectl apply -f ./namespace/cat-app/cat-app.Ingress.yaml -n cat-app
 ```
 
-- You can also deploy a complete folder using kubectl, this will deploy all the files in the folder, try it now.
+- You can deploy a complete folder using kubectl, this will deploy all the files in the folder, try it.
 
 ```bash
 kubectl apply -f ./namespace/cat-app/ -n cat-app
@@ -294,7 +293,7 @@ kubectl apply -f ./namespace/cat-app/ -n cat-app
 - Get familiar with the files in the `cat-app` folder, and try to understand what each file does.
 - Notice the URL in the cat-app.Ingress.yaml file, this is the `URL`, `Virtual Host` you'll use to access the cat-app.
 - Notice the `Service` file, this is the service that will be used to expose the cat-app to the internet. it uses the
-  type `ClusterIP` more on that later.
+  type `ClusterIP`.
 - For now check the `deployment` and `pod` status with kubectl or lens
 
 ```bash
@@ -315,7 +314,7 @@ kubectl get service -n cat-app
 kubectl get ingress -n cat-app
 ```
 
-Ingress is a collection of rules that allow inbound connections to reach the cluster services. It can be configured to
+Ingress is a collection of classes that allow inbound connections to reach the cluster services. It can be configured to
 give services externally-reachable URLs, load balance traffic, terminate SSL, offer name-based virtual hosting, and
 more.
 
@@ -326,19 +325,15 @@ cat-app   <none>   cat-app.k3d.local   172.20.0.2,172.20.0.3,172.20.0.4   80    
 
 - Notice the `cat-app.k3d.local` URL, this is the URL you'll use to access the cat-app.
 - Notice the `ADDRESS` field, this is the IP address of the service, it's a `ClusterIP` type service and is available on
-  all kubernetes Nodes ip in the cluster. If a node does not have the cat-app `pod`, it will forward the request to a
-  node
-  that does host the cat-app `pod`.
-- More commonly you'll see `LoadBalancer` type services, which will use the cloud provider's or on premises load
-  balancer to expose the service to the internet.
-- Try changing the `replicas` in the `cat-app.Deployment.yaml` file and apply the changes using kubectl.
+  all kubernetes Nodes in the cluster. If a node does not have the cat-app `pod`, it will forward the request to other
+  nodes that host the cat-app `pod` selector.
+- More commonly you'll see `LoadBalancer` type services, which use cloud provider's or on premises load
+  balancers to expose the services to the internet.
 
 ### Accessing the cat-app
 
 First we need to update our hosts file, normally you'll use a DNS server to resolve the URL to the IP address, and sign
 certificates automatically with let's encrypt.
-
-Or use notepad in windows, open it as administrator, open the file `C:\Windows\System32\drivers\etc\hosts`
 
 - Use the output from:
 
@@ -358,6 +353,11 @@ kubectl get ingress -n cat-app
 
 - To add the correct IP addresses your hosts file.
 
+Windows:
+
+- Open notepad as administrator, open the file `C:\Windows\System32\drivers\etc\hosts`
+
+Linux:
 
 - Edit your hosts file, add the cat-app hostname and save it
 
@@ -370,10 +370,10 @@ Now browse to [http://cat-app.k3d.local/](https://cat-app.k3d.local/) and you sh
 ### Start deploying using ArgoCD
 
 - Make sure you forked this repo before editing files, and clone your forked repo to your local machine. Later on you'll
-  push the changes to your fork to control ArgoCD the Gitops way.
+  push the changes to your fork to control ArgoCD the GitOps way.
 
 - To use ArgoCD we need to create the `argocd` namespace and deploy the ArgoCD application with
-  configmap, ingress and service. This command is not recursive, so only files in the `argocd` folder will be deployed,
+  configmap, ingress and service. This is not recursive, only files in the `argocd` folder will be deployed,
   sub folders are ignored.
 
 ```bash
@@ -389,20 +389,20 @@ kubectl apply -f ./namespace/argocd -n argocd
 - ArgoCD also provides a CLI tool to interact with the API, but for now we'll use kubectl.
 
 ```bash
-echo -n $(kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}') | base64 --decode
+kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 --decode
 ```
 
 *** Ignore the `%` when pasting the password. ***
 
 - Browse to [argocd.k3d.local](https://argocd.k3d.local), username: `admin`, password: `password from previous command`.
   Normally we would delete this initial secret after using it, and set a new admin password. but for now we'll keep it
-  as is.
+  as is
 
-- This repository includes a [repository](/namespace/argocd/repository/argocd.Repository.yaml) file,
+- This repository includes an [argocd.Repository](/namespace/argocd/repository/argocd.Repository.yaml) file
 
-- Update the repo url to your forked repository.
+- Update the repo url in this file to your forked repository
 
-- Apply the Repository using kubectl.
+- Apply the Repository using kubectl
 
 ```bash
 kubectl apply -f ./namespace/argocd/repository/argocd.Repository.yaml -n argocd
@@ -422,20 +422,20 @@ kubectl apply -f ./namespace/argocd/application/cat-app.application.yaml -n argo
 ```
 
 - Browse to [https://argocd.k3d.local/applications/argocd/cat-app](https://argocd.k3d.local/applications/argocd/cat-app)
-- Press the `sync` button to sync the application with the repository.
+- Press the `sync` button to sync the application with your forked repository.
 - Your cat app is now deployed using ArgoCD.
 
 ### ArgoCD can Git Ops itself
 
 We just deployed the cat app using ArgoCD, but we still needed kubectl to apply the application. ArgoCD can also manage
-itself using GitOps, so we can deploy the cat-app by adding a new file in the `namespace/argocd/application` folder.
+itself using GitOps, we can deploy the `cat-app` by adding a new file in the `namespace/argocd/application` folder.
 
 - First edit [argocd.application.yaml](/namespace/argocd/application/argocd.Application.yaml) and change `repoURL` to
-  your fork, then apply the application manifest.
+  your fork, then apply the application manifest
 
-- Commit and push the changes to your fork.
+- Commit and push the changes to your fork
 
-- Apply the application to ArgoCD.
+- Apply the application to ArgoCD
 
 ```bash
 kubectl apply -f ./namespace/argocd/application/argocd.Application.yaml -n argocd
@@ -444,11 +444,11 @@ kubectl apply -f ./namespace/argocd/application/argocd.Application.yaml -n argoc
 Since we added the application to the repository and sync is enabled in the ArgoCD application manifest files, it will
 automatically maintain the ArgoCD namespace based on the repository state.
 
-- Try deleting the cat-app in the ArgoCD gui, and see what happens.
+- Try deleting the cat-app in the ArgoCD gui, and see what happens
 
-Argo cd Notice that the cat-app is missing and will automatically recreate it.
+Argo cd notices that the cat-app is missing and will automatically recreate it
 
-- Edit [cat-app.Deployment.yaml](namespace/cat-app/cat-app.Deployment.yaml) and change the `replicas` to 3.
+- Edit [cat-app.Deployment.yaml](namespace/cat-app/cat-app.Deployment.yaml) and change the `replicas` to 3
 
 - Commit and push the changes to your fork
 
@@ -461,13 +461,14 @@ Argo cd Notice that the cat-app is missing and will automatically recreate it.
 
 ### What do you want to host?
 
-- Try playing around with your cluster, break it, fix it, add new applications.
+- Try playing around with your cluster, break it, fix it, add new applications
 
 - Open a shell to a container
 
 - Create a volume claim for persistent storage
 
-- Check out cool helm charts you can install within minutes. [awesome-helm](https://github.com/cdwv/awesome-helm)
+- Check out cool helm charts you can install within minutes.
+  [awesome-helm](https://github.com/cdwv/awesome-helm)
 
 If you have any questions or suggestions please let me know.
 
@@ -485,15 +486,16 @@ sudo k3d cluster delete workshop
 rm ~/.kube/config
 ```
 
+- Optionally restore your backup kubeconfig file by running:
+
+```bash
+mv ~/.kube/config.bak-wrkshp ~/.kube/config
+```
+
 - Restore your `hosts` file to its original state.
 
 ```bash
 sudo nano /etc/hosts
 ```
 
-- Optionally restore your backup kubeconfig file by running:
-
-```bash
-mv ~/.kube/config.bak-wrkshp ~/.kube/config
-```
 
