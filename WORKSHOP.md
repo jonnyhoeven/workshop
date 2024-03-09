@@ -1,7 +1,7 @@
 ## The Workshop
 
 We're going to deploy a simple application to a Kubernetes cluster using kubectl,
-and then we'll deploy the same application using ArgoCD along the way we'll be checking out multiple tools to configure
+then we'll deploy the same application using ArgoCD along the way we'll be checking out multiple tools to configure
 a kubernetes cluster.
 
 We'll end up with a cluster you can tinker with from your own git repository.
@@ -15,7 +15,7 @@ We'll need some tools to get our cluster running.
 ### Kubectl
 
 Kubectl is a command line tool for controlling Kubernetes clusters. It's used to deploy, inspect and
-manage cluster resources, and view logs.
+manage cluster. Container log resources can be found using: view logs.
 
 [Reference](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 
@@ -52,7 +52,7 @@ sudo apt-get install -y kubectl
 
 ### K3D (K3S in Docker) cluster setup
 
-K3D is a lightweight wrapper to run K3S (Rancher Lab's minimal Kubernetes distribution) in docker. I's a single binary
+K3D is a lightweight wrapper to run K3S (Rancher Lab's minimal Kubernetes distribution) in docker. It's a single binary
 that deploys a K3S server in a docker container. K3D makes it very easy to create single and multi-node K3S clusters in
 docker, it's possible to run multiple clusters at the same time on your development machine.
 
@@ -65,10 +65,8 @@ wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 ### Docker
 
 If running in Windows (WSL) you'll need [Docker Desktop](https://www.docker.com/products/docker-desktop/),
-otherwise you can install docker using this
-guide: [Install on Linux](https://docs.docker.com/desktop/install/linux-install/)
 
-Install Docker:
+Install Debian linux using Docker.io:
 
 ```bash
 sudo apt install docker.io
@@ -106,38 +104,36 @@ sudo k3d cluster list
 
 ## Access the cluster using kubectl
 
-Kubeconfig is a file that holds information about cluster, including the hostname, certificate authority, and
+Kubeconfig is a file that holds information about clusters, including the hostname, certificate authority, and
 authentication information. It's located at `~/.kube/config` by default, and can be used by other
 applications to connect to the cluster. Keep this file secure, it's the **key** to your cluster.
 
 In normal situations you'll need to obtain the kubeconfig file from one of the Kubernetes cluster control nodes,
 if running locally K3D can provide the kubeconfig file.
 
-You can get the config from K3D by running:
+You can get the kubeconfig file from K3D by running:
 
 ```bash
 sudo k3d kubeconfig get workshop > kubeconfig.yaml
 ```
 
-- Update your `~/.kube/config` file with the newly generated [kubeconfig.yaml](./kubeconfig.yaml) file.
-
-e.g. on linux:
+- Update your user `~/.kube/config` file with the newly generated [kubeconfig.yaml](./kubeconfig.yaml) file.
 
 ```bash
-mv ~/.kube/config ~/.kube/config.bak-wrkshp
+mv ~/.kube/config ~/.kube/config.bak-wrkshp #Backup any existing kubeconfig
 ```
 
 ```bash
 mv ./kubeconfig.yaml ~/.kube/config
 ```
 
-- Check the cluster info using kubectl cluster-info
+- Check cluster info
 
 ```bash
 kubectl cluster-info
 ```
 
-- Check the nodes in the cluster using kubectl
+- Check the cluster Nodes
 
 ```bash
 kubectl get nodes
@@ -158,7 +154,7 @@ Browse around, check the `Nodes`, `Namespaces`, `Custom Resource Definitions` an
 
 ## Some notes about Namespaces
 
-Namespaces a method to divide cluster resources and quota's
+Namespaces divide cluster resources and quota's
 They are intended for use in environments with many users spread across multiple teams or
 projects. Namespaces are not a security feature, to isolate different users or namespaces from each other we need tools
 like [Loft](https://loft.sh/) that leverage RBAC (Role based account control) to securely isolate namespaces
@@ -180,8 +176,7 @@ kubectl get namespaces
 
 ## Create your own namespace
 
-Let's create a new namespace and deploy an application to it.
-Let's call it `workshop`.
+Let's create a new namespace and deploy an application in the `workshop` namespace.
 
 ```bash
 kubectl create namespace workshop
@@ -189,11 +184,11 @@ kubectl create namespace workshop
 
 ### Deploy an application manually
 
-We'll deploy a simple nginx web server to our cluster.
+We'll deploy nginx web server to our cluster.
 
-`-n` or `--namespace` is used to specify the namespace to deploy the application to.
+The `-n` or `--namespace` parameter is used to specify the namespace to deploy the application to.
 If you don't provide a namespace, the application will deploy to the `default` namespace.
-Resulting in hard to manage, hard to find resource manifests and naming conflicts.
+Resulting in hard to manage, hard to find resources and naming conflicts.
 
 ```bash
 kubectl create deployment nginx --image=nginx -n workshop
@@ -237,7 +232,7 @@ replica, so if the `pod` is deleted, a new one is created to replace it.
 kubectl get pod -n workshop
 ```
 
-The `pod` is running again, but now it's got a different name.
+The `pod` is running again, but now it's got a _different_ name.
 
 It's important to note that the `deployment` manifest manages the `pod`, and a `pod` can be replicated.
 
@@ -254,7 +249,7 @@ kubectl delete deployment nginx -n workshop
 kubectl get pod -n workshop
 ```
 
-Without the `deployment` manifest with a minimal `pod` replica count, the `pod` gets removed.
+Without the `deployment` manifest with a minimal `pod` replica count, the `pod` is removed.
 
 - Clean up the namespace
 
@@ -265,7 +260,7 @@ kubectl delete namespace workshop
 ### Deploy using manifest files from code
 
 Normally you'll want to deploy using a manifest file, so you can keep track of your `deployments` and
-easily replicate them across different clusters.
+easily replicate them across different clusters or namespaces.
 
 __Before starting make sure you're in the correct working directory__
 
@@ -283,7 +278,7 @@ kubectl apply -f ./namespace/cat-app/cat-app.Service.yaml -n cat-app
 kubectl apply -f ./namespace/cat-app/cat-app.Ingress.yaml -n cat-app
 ```
 
-- You can deploy a complete folder using kubectl, this will deploy all the files in the folder, try it.
+- You can deploy a complete folder using kubectl, this will deploy all the files in one folder, try it.
 
 ```bash
 kubectl apply -f ./namespace/cat-app/ -n cat-app
@@ -332,13 +327,9 @@ cat-app   <none>   cat-app.k3d.local   172.20.0.2,172.20.0.3,172.20.0.4   80    
 ### Accessing the cat-app
 
 First we need to update our hosts file, normally you'll use a DNS server to resolve the URL to the IP address, and sign
-certificates automatically with let's encrypt.
+TLS certificates automatically with `let's encrypt` or a `Common Authority` certificate.
 
-- Use the output from:
-
-```bash
-kubectl get ingress -n cat-app
-```
+- Use the output above to update your hosts file:
 
 ```text
 # Workshop K3D cluster
@@ -350,7 +341,7 @@ kubectl get ingress -n cat-app
 172.xx.0.4 argocd.k3d.local
 ```
 
-- To add the correct IP addresses to your hosts file.
+- Add the correct IP addresses to your hosts file:
 
 Windows:
 
@@ -358,21 +349,23 @@ Windows:
 
 Linux:
 
-- Edit your hosts file, add the cat-app hostname and save it
+- Edit your hosts file
 
 ```bash
 sudo nano /etc/hosts
 ```
 
-Now browse to [http://cat-app.k3d.local/](https://cat-app.k3d.local/) and you should see the nginx welcome page.
+Now browse to [http://cat-app.k3d.local/](https://cat-app.k3d.local/), you should see the nginx welcome page.
 
 ### Start deploying using ArgoCD
 
-- Make sure you forked this repo before editing files, and clone your forked repo to your local machine. Later on you'll
-  push the changes to your fork to control ArgoCD the GitOps way.
+- Make sure you forked this repo and cloned your forked repo to your local machine before editing files. Later on we'll
+  use your fork to steer your local cluster.
+
+- Push any changes to your fork: This is the `GitOps` way.
 
 - To use ArgoCD we need to create the `argocd` namespace and deploy the ArgoCD application with
-  configmap, ingress and service. This is not recursive, only files in the `argocd` folder will be deployed,
+  `configmap`, `ingress` and `service`. This is not recursive, only files in the `argocd` folder will be deployed,
   sub folders are ignored.
 
 ```bash
@@ -386,6 +379,7 @@ kubectl apply -f ./namespace/argocd -n argocd
 - Extract the ArgoCD admin password, we first request the secret and then decode the password using base64 to plain
   text. The initial password is randomly generated and unique to each ArgoCD installation.
 - ArgoCD also provides a CLI tool to interact with the API, but for now we'll use kubectl.
+- We should delete this `ConfigMap` manifest and create a new password.
 
 ```bash
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 --decode
@@ -393,9 +387,12 @@ kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.pas
 
 *** Ignore the `%` when pasting the password. ***
 
-- Browse to [argocd.k3d.local](https://argocd.k3d.local), username: `admin`, password: `password from previous command`.
-  Normally we would delete this initial secret after using it, and set a new admin password. For now we'll keep it
-  as is
+- Browse to [argocd.k3d.local](https://argocd.k3d.local)
+- username: `admin`
+- password: `password from previous command`.
+
+Normally we would delete this initial secret after using it, and set a new admin password. For now we'll keep it
+as is
 
 - This repository includes a [argocd.Repository](/namespace/argocd/repository/argocd.Repository.yaml) file
 
@@ -444,7 +441,7 @@ automatically maintain the ArgoCD namespace based on the repository state.
 
 - Try deleting the cat-app in the ArgoCD gui, and see what happens
 
-Argo cd notices that the cat-app is missing and will automatically recreate it
+Argo cd notices that the cat-app is missing and will automatically recreate/heal.
 
 - Edit [cat-app.Deployment.yaml](namespace/cat-app/cat-app.Deployment.yaml) and change the `replicas` to 3
 
@@ -484,7 +481,7 @@ sudo k3d cluster delete workshop
 rm ~/.kube/config
 ```
 
-- Optionally restore the original kubeconfig file you had before this workshop by running:
+- Optionally restore the original kubeconfig file you had before by running:
 
 ```bash
 mv ~/.kube/config.bak-wrkshp ~/.kube/config
