@@ -54,7 +54,7 @@ sudo apt-get install -y kubectl
 
 K3D is a lightweight wrapper to run K3S (Rancher Lab's minimal Kubernetes distribution) in docker. I's a single binary
 that deploys a K3S server in a docker container. K3D makes it very easy to create single and multi-node K3S clusters in
-docker, and it possible to run multiple clusters at the same time.
+docker, it's possible to run multiple clusters at the same time on your development machine.
 
 [Reference](https://k3d.io/v5.6.0/#quick-start)
 
@@ -76,12 +76,12 @@ sudo apt install docker.io
 
 ### Lens
 
-Lens is a Kubernetes IDE that allows you to manage and monitor and manipulate your clusters.
+Lens is a Kubernetes IDE that allows you to manage, monitor and manipulate your clusters.
 
 Recently some features were removed from Open Lens. Plugins replacing this functionality aren't yet working properly.
 So for now, it's recommended to use the Mirantis Free version of Lens.
 
-- [Lens](https://k8slens.dev/desktop.html) (From Mirantis)
+- [Lens](https://k8slens.dev/desktop.html) (Mirantis)
 - [Open Lens](https://flathub.org/apps/dev.k8slens.OpenLens) (Open Source version)
 
 ## Start a new Kubernetes cluster
@@ -89,7 +89,7 @@ So for now, it's recommended to use the Mirantis Free version of Lens.
 [Reference](https://k3d.io/v5.3.0/usage/commands/k3d_cluster_create/)
 
 We'll be creating 1 server and 2 agents for our cluster.
-Normally for high availability you'll want to have at least 2 control planes, each with 2 agents.
+Normally for high availability you'll want to have at least 2 control planes, with 2 agents/workers.
 but for this example we'll keep it simple.
 
 We'll name this cluster `workshop`.
@@ -158,11 +158,10 @@ Browse around, check the `Nodes`, `Namespaces`, `Custom Resource Definitions` an
 
 ## Some notes about Namespaces
 
-Namespaces are methods to divide cluster resources between multiple users (via resource quota) and multiple projects (
-via separation of resources). They are intended for use in environments with many users spread across multiple teams, or
+Namespaces a method to divide cluster resources and quota's
+They are intended for use in environments with many users spread across multiple teams or
 projects. Namespaces are not a security feature, to isolate different users or namespaces from each other we need tools
-like
-[Loft](https://loft.sh/) that leverage RBAC (Role based account control) to securely isolate namespaces
+like [Loft](https://loft.sh/) that leverage RBAC (Role based account control) to securely isolate namespaces
 across teams.
 
 By default, Kubernetes starts with four initial namespaces:
@@ -194,7 +193,7 @@ We'll deploy a simple nginx web server to our cluster.
 
 `-n` or `--namespace` is used to specify the namespace to deploy the application to.
 If you don't provide a namespace, the application will deploy to the `default` namespace.
-Resulting in hard to manage and hard to find resource manifests.
+Resulting in hard to manage, hard to find resource manifests and naming conflicts.
 
 ```bash
 kubectl create deployment nginx --image=nginx -n workshop
@@ -242,7 +241,7 @@ The `pod` is running again, but now it's got a different name.
 
 It's important to note that the `deployment` manifest manages the `pod`, and a `pod` can be replicated.
 
-It's recommended to use `Evict` or `Taint` instead of deleting definitions, to avoid downtime.
+To avoid downtime it's recommended to use `Evict` or `Taint` instead of deleting definitions.
 This will result in kubernetes creating a new `pod` and wait for it to be ready before deleting the old `evicted pod`.
 
 - Delete the `deployment` and check the `pod` status again.
@@ -327,8 +326,8 @@ cat-app   <none>   cat-app.k3d.local   172.20.0.2,172.20.0.3,172.20.0.4   80    
 - Notice the `ADDRESS` field, this is the IP address of the service, it's a `ClusterIP` type service and is available on
   all kubernetes Nodes in the cluster. If a node does not have the cat-app `pod`, it will forward the request to other
   nodes that host the cat-app `pod` selector.
-- More commonly you'll see `LoadBalancer` type services, which use cloud provider's or on premises load
-  balancers to expose the services to the internet.
+- More commonly you'll see `LoadBalancer` type services, which use cloud provider's or on premises load balancers to expose
+  the services to other networks/internet.
 
 ### Accessing the cat-app
 
@@ -351,7 +350,7 @@ kubectl get ingress -n cat-app
 172.xx.0.4 argocd.k3d.local
 ```
 
-- To add the correct IP addresses your hosts file.
+- To add the correct IP addresses to your hosts file.
 
 Windows:
 
@@ -395,10 +394,10 @@ kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.pas
 *** Ignore the `%` when pasting the password. ***
 
 - Browse to [argocd.k3d.local](https://argocd.k3d.local), username: `admin`, password: `password from previous command`.
-  Normally we would delete this initial secret after using it, and set a new admin password. but for now we'll keep it
+  Normally we would delete this initial secret after using it, and set a new admin password. For now we'll keep it
   as is
 
-- This repository includes an [argocd.Repository](/namespace/argocd/repository/argocd.Repository.yaml) file
+- This repository includes a [argocd.Repository](/namespace/argocd/repository/argocd.Repository.yaml) file
 
 - Update the repo url in this file to your forked repository
 
@@ -408,14 +407,13 @@ kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.pas
 kubectl apply -f ./namespace/argocd/repository/argocd.Repository.yaml -n argocd
 ```
 
-- The [repository](https://argocd.k3d.local/settings/repos) is now visible in the ArgoCD UI.
+- Your forked [repository](https://argocd.k3d.local/settings/repos) is now visible in the ArgoCD UI.
 
-- The [application](namespace/argocd/application/cat-app.Application.yaml) file is also already in the repository,
-  update the repo url to your forked repo and apply the application.
+- Update the Repository URL in the [cat-app.Application](namespace/argocd/application/cat-app.Application.yaml) file
 
-- Commit and push the changes to your forked repository.
+- Push this change to your fork
 
-- Apply the application to the ArgoCD namespace.
+- Now, Apply the application to the ArgoCD namespace.
 
 ```bash
 kubectl apply -f ./namespace/argocd/application/cat-app.application.yaml -n argocd
@@ -431,7 +429,7 @@ We just deployed the cat app using ArgoCD, but we still needed kubectl to apply 
 itself using GitOps, we can deploy the `cat-app` by adding a new file in the `namespace/argocd/application` folder.
 
 - First edit [argocd.application.yaml](/namespace/argocd/application/argocd.Application.yaml) and change `repoURL` to
-  your fork, then apply the application manifest
+  your fork.
 
 - Commit and push the changes to your fork
 
@@ -441,7 +439,7 @@ itself using GitOps, we can deploy the `cat-app` by adding a new file in the `na
 kubectl apply -f ./namespace/argocd/application/argocd.Application.yaml -n argocd
 ```
 
-Since we added the application to the repository and sync is enabled in the ArgoCD application manifest files, it will
+Since we added the application to the repository and sync is enabled in the ArgoCD Application manifest file, it will
 automatically maintain the ArgoCD namespace based on the repository state.
 
 - Try deleting the cat-app in the ArgoCD gui, and see what happens
@@ -455,9 +453,9 @@ Argo cd notices that the cat-app is missing and will automatically recreate it
 - Go to
   the [cat-app network resources view](https://argocd.k3d.local/applications/argocd/cat-app?view=network&resource=)
 
-- Press the refresh button.
+- Press the refresh button to check for git updates
 
-- The cat-app `deployment` is now updated to 3 replicas.
+- The cat-app `deployment` is now updating to 3 replicas
 
 ### What do you want to host?
 
@@ -486,7 +484,7 @@ sudo k3d cluster delete workshop
 rm ~/.kube/config
 ```
 
-- Optionally restore your backup kubeconfig file by running:
+- Optionally restore the original kubeconfig file you had before this workshop by running:
 
 ```bash
 mv ~/.kube/config.bak-wrkshp ~/.kube/config
