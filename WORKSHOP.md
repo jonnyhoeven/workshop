@@ -1,8 +1,8 @@
 ## The Workshop
 
 We're going to deploy a simple application to a Kubernetes cluster using kubectl,
-then we'll deploy the same application using ArgoCD along the way we'll be checking out multiple tools to configure
-a kubernetes cluster.
+then we'll deploy the same application using ArgoCD,
+along the way we'll be checking out multiple tools to configure a kubernetes cluster.
 
 We'll end up with a cluster you can tinker with from your own git repository.
 
