@@ -15,7 +15,7 @@ We'll need some tools to get our cluster running.
 ### Kubectl
 
 Kubectl is a command line tool for controlling Kubernetes clusters. It's used to deploy, inspect and
-manage cluster. Container log resources can be found using: view logs.
+manage cluster.
 
 [Reference](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 
