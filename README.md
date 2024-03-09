@@ -182,5 +182,6 @@ external sources, most commonly git repositories.
 It follows the GitOps pattern of using Git repositories as the source of truth for defining the desired application
 state. ArgoCD is very declarative and all it's configuration is stored in a Git repository also.
 
-You'll need to install kubectl to interact with the cluster.
+## Workshop
 
+Open [WORKSHOP.md](./WORKSHOP.md)
