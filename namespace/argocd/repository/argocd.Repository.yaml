@@ -7,4 +7,4 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 stringData:
   type: git
-  url: https://github.com/jonnyhoeven/argocd-gitops-workshop.git
+  url: https://github.com/jonnyhoeven/workshop.git

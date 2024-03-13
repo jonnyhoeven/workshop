@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/jonnyhoeven/argocd-gitops-workshop.git
+    repoURL: https://github.com/jonnyhoeven/workshop.git
     targetRevision: HEAD
     path: namespace/argocd
     directory:
