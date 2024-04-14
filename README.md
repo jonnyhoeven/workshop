@@ -744,7 +744,7 @@ automatically maintain the ArgoCD namespace based on the repository state.
 
 ::: info Increase replicas using Gitops
 
-- Try deleting the cat-app in the ArgoCD web ui and see what happens
+Try deleting the cat-app in the ArgoCD web ui and see what happens
 
 Argo cd notices that the cat-app is missing and will automatically recreate/heal.
 
