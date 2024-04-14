@@ -76,8 +76,9 @@ declare the desired state and Kubernetes will do the rest.
 Health checks are integral to determine if a container is healthy or not. Kubernetes supports three types of health
 checks: `livenessProbe`, `readinessProbe` and `startupProbe`.
 
-Kubernetes utilizes `Health Probes` to determine if a container is healthy or not. If a container isn't healthy,
-Kubernetes will restart the container. Afterwards Kubernetes will not send traffic to that container.
+Kubernetes utilizes `Health Probes` to determine container liveness. If a container isn't healthy,
+Kubernetes will restart the whole `Pod`. After a number of specified back-off periods while restarting the pod.
+Kubernetes will not send anymore traffic to that `pod`.
 
 Developers can define the health-result of their application and Kubernetes will take care of the rest.
 
@@ -90,7 +91,7 @@ Developers can define the health-result of their application and Kubernetes will
 
 ### Containers reside in Pods
 
-A Pod is the smallest deployable unit in Kubernetes. A Pod represents a single instance of a running process in your
+A Pod is the smallest deployable unit in Kubernetes. A Pod represents a single instance of a service within your
 cluster. Pods contain one or more containers. When a Pod runs multiple containers, the
 containers are managed as a single entity and share the same resources.
 
@@ -98,24 +99,23 @@ More importantly, containers in a pod share the same lifecycle, they're started 
 considered atomic.
 
 A Pod can be considered a separate subnetwork, containers within a pod are effectively behind NAT (Network Address
-Translation). Inside this Pod containers can rely on local DNS services to find hostnames in their own or different
+Translation). Inside this `Pod` containers can rely on local DNS services to find hostnames in their own or different
 namespaces.
 
-Since networking and state is separate and also atomic this means you can run multiple replica's of the same Pod and
+Since networking and state is separate and atomic this means you can run multiple replica's of the same Pod and
 increase availability. Without the need to worry about state or networking from a container perspective.
 
 ### Pods expose their ports to Services
 
 Services provide a method to expose applications running on a set of Pod replica's as a network service.
 Services are mostly abstraction/glue for Pods and Ingress. They provide a stable endpoint for Pods and Ingress to
-connect to.
+interconnect.
 
-### Ingress connects Services to the outside world
+### Ingress connect Services to the outside world
 
 Ingress is a collection of rules that allows inbound connections to reach the cluster Services.
 It's used to allow external ingress to different services via ports, load balancers, Virtual Hostnames or SSL
-termination using
-Common authority or Cert Manager using Let's Encrypt API.
+termination using Common authority or [Cert Manager](https://cert-manager.io/) [Let's Encrypt API](https://letsencrypt.org/docs/).
 
 ### Namespaces
 
@@ -562,7 +562,7 @@ sudo nano /etc/hosts
 
 :::
 
-Browse to [http://cat-app.k3d.local/](https://cat-app.k3d.local/), you should see the nginx welcome page.
+Open [http://cat-app.k3d.local/](https://cat-app.k3d.local/), you should see the nginx welcome page.
 
 ### Start deploying using ArgoCD
 
@@ -677,7 +677,7 @@ kubectl apply -f ./namespace/argocd/application/cat-app.Application.yaml -n argo
 
 :::
 
-Browse to [https://argocd.k3d.local/applications/argocd/cat-app](https://argocd.k3d.local/applications/argocd/cat-app)
+Lookup the [cat-app in ArgoCD](https://argocd.k3d.local/applications/argocd/cat-app)
 
 Press the `sync` button to sync the application with your forked repository.
 Your cat app is now deployed using ArgoCD.
@@ -787,7 +787,7 @@ git push
 
 :::
 
-Browse to [cat-app network resources view](https://argocd.k3d.local/applications/argocd/cat-app?view=network&resource=)
+Open [cat-app network resources view](https://argocd.k3d.local/applications/argocd/cat-app?view=network&resource=)
 Press the refresh button to check for git updates, the cat-app `deployment` is now updating to 3 replicas
 
 ### Some ideas to try
