@@ -428,7 +428,7 @@ It's important to note that the `deployment` manifest manages the `pod` and `pod
 
 ::: tip
 To avoid downtime it's recommended to use `Evict` or `Taint` instead of deleting definitions.
-This will result in Kubernetes creating a new `pod` and wait for it to be ready before deleting the pod.
+This will result in Kubernetes creating a new `pod` and wait for it to be ready before deleting the original pod.
 :::
 
 ::: info Delete the `deployment`
@@ -443,7 +443,7 @@ Now check the `pod` status again
 kubectl get pod -n workshop
 ```
 
-Without the `deployment` manifest with that defines `pod` replica count, the `pod` is removed.
+Without the `deployment` manifest that defines `pod` replica count, the `pod` is removed.
 
 Clean up the namespace.
 
