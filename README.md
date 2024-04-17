@@ -396,7 +396,7 @@ Check the `pod` status with kubectl
 kubectl get pod -n workshop
 ```
 
-The result should look like this:
+The result should somewhat look like this:
 
 ```text
 # NAME                     READY   STATUS    RESTARTS   AGE
