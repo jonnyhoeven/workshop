@@ -685,9 +685,9 @@ Your cat app is now deployed using ArgoCD.
 ### ArgoCD can Git Ops itself
 
 We just deployed the cat app using ArgoCD, but we still needed Kubectl to apply the application. ArgoCD can also manage
-itself using GitOps.
+itself using Git-Ops.
 
-::: info Setup ArgoCD application
+::: info Setup ArgoCD using Git-Ops
 Open the [argocd.Application](/namespace/argocd/application/argocd.Application.yaml) and change `repoURL` to your forked
 repository.
 
@@ -742,7 +742,7 @@ kubectl apply -f ./namespace/argocd/application/argocd.Application.yaml -n argoc
 Since we added the application to the repository and sync is enabled in the ArgoCD Application manifest file, it will
 automatically maintain the ArgoCD namespace based on the repository state.
 
-::: info Increase replicas using Gitops
+::: info Change replicas using Git-Ops
 
 Try deleting the cat-app in the ArgoCD web ui and see what happens
 
@@ -791,6 +791,8 @@ Open [cat-app network resources view](https://argocd.k3d.local/applications/argo
 Press the refresh button to check for git updates, the cat-app `deployment` is now updating to 3 replicas
 
 ### Some ideas to try
+
+Since we have a Kubernetes cluster that allows you to define the state from your own git repository, why not be creative.
 
 - Open a shell to a container
 
