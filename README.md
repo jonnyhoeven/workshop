@@ -536,25 +536,25 @@ TLS certificates automatically with `let's encrypt` or a `Common Authority` cert
 ::: info Get Ingress
 
 ```bash
-chmod +x hosthelp.sh
 kubectl get ingress -n cat-app
 ```
 
 Notice the `ADDRESS` field, copy the IP addresses and paste them after the `hosthelp.sh` command.
 
 ```bash
+chmod +x hosthelp.sh
 ./hosthelp.sh <ADDRESS>
 ```
 
 :::
 
-Add the output of the `hosthelp.sh` command to your hosts file.
+Add the output from the `hosthelp.sh` command to your hosts file.
 
 ::: info Windows users
 Start notepad as administrator, open the file `C:\Windows\System32\drivers\etc\hosts`.
 :::
 
-::: info Linux users
+::: info Linux users (Not for WSL)
 
 ```bash
 sudo nano /etc/hosts
@@ -566,7 +566,7 @@ Open [http://cat-app.k3d.local/](https://cat-app.k3d.local/), you should see the
 
 ### Start deploying using ArgoCD
 
-::: danger Before contining:
+::: danger Before continuing:
 Make sure you forked this repo and cloned your forked repo to your local machine before editing files.
 Later on we'll use your fork to steer your local cluster.
 :::
@@ -583,7 +583,7 @@ Apply the ArgoCD manifests to the `argocd` namespace.
 kubectl apply -f ./namespace/argocd -n argocd
 ```
 
-Extract the ArgoCD admin password, we first request the secret and then decode the password using base64 to plain
+Extract the ArgoCD admin password, first we request the secret and then decode the password using base64 to plain
 text. The initial password is randomly generated and unique to each ArgoCD installation.
 
 ```bash
