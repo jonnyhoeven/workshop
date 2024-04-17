@@ -16,7 +16,7 @@ to control and manage Kubernetes clusters.
   deploy your `manifests`.
 - You'll understand the difference between `declarative` vs `imperative` statements and the vital importance of proper
   `health checks` in conjunction with `livenessProbe`, `readinessProbe` and `startupProbe`.
-- Yes, kubernetes has some deep dark `logic`, it's a declarative system that will try to maintain the desired `state`
+- Yes, Kubernetes has some deep dark `logic`, it's a declarative system that will try to maintain the desired `state`
   and
   might do some unexpected things if you're not careful.
 - You'll understand the difference between `Pods`, `Services`, `Ingress`, `Namespaces`, `ConfigMaps` and `Secrets`.
@@ -56,20 +56,19 @@ applications and ensure they're in the desired state.
 > [!TIP]
 > It's important to understand that CRD's are methods to extend the Kubernetes API and create new resources. This
 > concept
-> is used in many operators, controllers, helm charts, ingress classes, storage classes to create new resources and
-> manage
-> them individually.
+> is used in many operators, controllers, helm charts, ingress classes and storage classes to create new resources and
+> manage them individually.
 
 ### Declarative vs Imperative
 
-Declarative means you define the desired state of the system and Kubernetes automatically changes the current state to
+Declarative means: you define the desired state of the system and Kubernetes automatically changes the current state to
 the desired state the best way it can.
 A powerful tool to manage the system. Instead of writing a series of commands to put the system in a certain state, you
 declare the desired state and Kubernetes will do the rest.
 
 > [!WARNING]
 > This has a mayor impact, small changes in the desired state can have a big impact on the current state. It's important
-> to understand the difference between the desired states of the system to prevent unwanted changes.
+> to understand the difference between the desired states of the system to prevent unwanted changes by Kubernetes.
 
 ### Health Checks
 
@@ -115,7 +114,8 @@ interconnect.
 
 Ingress is a collection of rules that allows inbound connections to reach the cluster Services.
 It's used to allow external ingress to different services via ports, load balancers, Virtual Hostnames or SSL
-termination using Common authority or [Cert Manager](https://cert-manager.io/) [Let's Encrypt API](https://letsencrypt.org/docs/).
+termination using Common authority
+or [Cert Manager](https://cert-manager.io/) [Let's Encrypt API](https://letsencrypt.org/docs/).
 
 ### Namespaces
 
