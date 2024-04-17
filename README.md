@@ -665,7 +665,7 @@ Push this change to your forked repository.
 
 ```bash
 git add .
-git commit -m "Changed repoURL"
+git commit -m "New fork"
 git push
 ```
 
@@ -727,7 +727,7 @@ Commit and push the changes to your fork
 
 ```bash
 git add .
-git commit -m "Changed repoURL"
+git commit -m "Change"
 git push
 ```
 
