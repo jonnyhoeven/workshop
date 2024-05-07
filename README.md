@@ -4,8 +4,7 @@ This workshop is designed to provide basic understanding of Kubernetes and `Argo
 
 During the workshop, we'll be deploying a simple application to your Kubernetes cluster using `kubectl`. Later we'll
 deploy the same application using `ArgoCD` using your new `git` repository. Meanwhile, we'll be checking out multiple
-tools
-to control and manage Kubernetes clusters.
+tools to control and manage Kubernetes clusters.
 
 ### After this workshop:
 
@@ -17,8 +16,7 @@ to control and manage Kubernetes clusters.
 - You'll understand the difference between `declarative` vs `imperative` statements and the vital importance of proper
   `health checks` in conjunction with `livenessProbe`, `readinessProbe` and `startupProbe`.
 - Yes, Kubernetes has some deep dark `logic`, it's a declarative system that will try to maintain the desired `state`
-  and
-  might do some unexpected things if you're not careful.
+  and might do some unexpected things if you're not careful.
 - You'll understand the difference between `Pods`, `Services`, `Ingress`, `Namespaces`, `ConfigMaps` and `Secrets`.
 - You'll know how to use tools like `Helm` and `Lens` to manage your cluster.
 
@@ -35,11 +33,11 @@ webkitallowfullscreen="true"></iframe>
 ### Kubernetes concepts
 
 - Kubernetes is a container orchestration platform that automates `deployment`, `scaling` and `management` of
-  containerized
-  applications.
+  containerized  applications.
 - It's `declarative`, meaning you define the desired `state` and Kubernetes automatically changes the `current
   state` to the `desired state` the best way it can.
-- It's designed to be `extensible` and `scalable`. Built to handle a wide range of workloads, from `stateless`
+- It's designed to be `extensible` and `scalable`. 
+- Built to handle a wide range of workloads, from `stateless`
   to `stateful` applications.
 
 ### Extendable - Custom Resource Definitions (CRD's)
@@ -85,8 +83,7 @@ Developers can define the health-result of their application and Kubernetes will
 > Kubernetes won't just kill the old containers and start new ones. It will do this in a controlled manner. It
 > first starts up the new container and waits for it to be healthy. Then it will stop the old container to prevent
 > downtime. It's therefore important to have concise health checks in place, developers should be encouraged to
-> manipulate
-> health checks if they deem a service misbehaving or unavailable.
+> manipulate health checks if they deem a service misbehaving or unavailable.
 
 ### Containers reside in Pods
 
@@ -110,12 +107,12 @@ Services provide a method to expose applications running on a set of Pod replica
 Services are mostly abstraction/glue for Pods and Ingress. They provide a stable endpoint for Pods and Ingress to
 interconnect.
 
-### Ingress connect Services to the outside world
+### Ingress connects Services to the outside world
 
 Ingress is a collection of rules that allows inbound connections to reach the cluster Services.
 It's used to allow external ingress to different services via ports, load balancers, Virtual Hostnames or SSL
-termination using Common authority
-or [Cert Manager](https://cert-manager.io/) [Let's Encrypt API](https://letsencrypt.org/docs/).
+termination using Let's encrypt [Cert Manager](https://cert-manager.io/) 
+[Let's Encrypt API](https://letsencrypt.org/docs/) or Common Authority.
 
 ### Namespaces
 
