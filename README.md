@@ -33,10 +33,10 @@ webkitallowfullscreen="true"></iframe>
 ### Kubernetes concepts
 
 - Kubernetes is a container orchestration platform that automates `deployment`, `scaling` and `management` of
-  containerized  applications.
+  containerized applications.
 - It's `declarative`, meaning you define the desired `state` and Kubernetes automatically changes the `current
   state` to the `desired state` the best way it can.
-- It's designed to be `extensible` and `scalable`. 
+- It's designed to be `extensible` and `scalable`.
 - Built to handle a wide range of workloads, from `stateless`
   to `stateful` applications.
 
@@ -111,7 +111,7 @@ interconnect.
 
 Ingress is a collection of rules that allows inbound connections to reach the cluster Services.
 It's used to allow external ingress to different services via ports, load balancers, Virtual Hostnames or SSL
-termination using Let's encrypt [Cert Manager](https://cert-manager.io/) 
+termination using Let's encrypt [Cert Manager](https://cert-manager.io/)
 [Let's Encrypt API](https://letsencrypt.org/docs/) or Common Authority.
 
 ### Namespaces
@@ -123,7 +123,7 @@ It's a powerful tool to divide resources and provides isolation between differen
 divide resources between different environments like development, staging and production.
 Ideally the only difference between staging and production should be a namespace Configmap and Secrets.
 
-The ```default``` namespace is the default namespace for objects with no other namespace. It's important to note that
+The `default` namespace is the default namespace for objects with no other namespace. It's important to note that
 namespaces are not a security boundary, just methods to divide resources and provide isolation between different
 applications. It's important to note that resources in different namespaces can communicate with each other.
 
@@ -146,7 +146,7 @@ along the way we'll be checking out multiple tools to configure a Kubernetes clu
 
 - We'll end up with a cluster you can tinker with from your own git repository.
 - It follows `Git-Ops` patterns using Git repositories as the source of _truth_ that defines the desired state.
-  ArgoCD is very declarative and all configuration is stored in Git repositories.
+  ArgoCD is very declarative and all it's configuration is stored in Git repositories.
 - This won't be a deep dive into Kubernetes, but it will give you a good understanding of the basics and how to deploy
   applications using `kubectl` and `ArgoCD`.
 
@@ -164,10 +164,10 @@ Clone your forked repo to your local machine.
 ```markdown [VSCode]
 Open the command palette with the key 
 combination of `Ctrl` + `Shift` + `P`.
-At the command palette prompt, enter `gitcl`, 
+At the command palette prompt, enter `gitclone`, 
 select the Git: `Clone` command, 
 then select `Clone from GitHub` and press Enter.
-When prompted for the Repository URL, 
+When prompted for the Repository URL,
 select `clone from GitHub`, then press Enter.
 ```
 
@@ -789,7 +789,8 @@ Press the refresh button to check for git updates, the cat-app `deployment` is n
 
 ### Some ideas to try
 
-Since we have a Kubernetes cluster that allows you to define the state from your own git repository, why not be creative.
+Since we have a Kubernetes cluster that allows you to define the state from your own git repository, why not be
+creative.
 
 - Open a shell to a container
 
