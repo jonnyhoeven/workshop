@@ -111,8 +111,7 @@ interconnect.
 
 Ingress is a collection of rules that allows inbound connections to reach the cluster Services.
 It's used to allow external ingress to different services via ports, load balancers, Virtual Hostnames or SSL
-termination using Let's encrypt [Cert Manager](https://cert-manager.io/)
-[Let's Encrypt API](https://letsencrypt.org/docs/) or Common Authority.
+termination using [Cert Manager](https://cert-manager.io/) and the [Let's Encrypt API](https://letsencrypt.org/docs/).
 
 ### Namespaces
 
