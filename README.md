@@ -3,7 +3,7 @@
 This workshop is designed to provide basic understanding of Kubernetes and `ArgoCD`.
 
 During the workshop, we'll be deploying a simple application to your Kubernetes cluster using `kubectl`. Later we'll
-deploy the same application using `ArgoCD` using your new `git` repository. Meanwhile, we'll be checking out multiple
+deploy the same application using `ArgoCD` and your new `git` repository. Meanwhile, we'll be checking out multiple
 tools to control and manage Kubernetes clusters.
 
 ### After this workshop:
