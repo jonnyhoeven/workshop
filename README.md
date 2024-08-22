@@ -2,7 +2,7 @@
 
 This workshop is designed to provide basic understanding of Kubernetes and `ArgoCD`.
 
-During the workshop, we'll be deploying a simple application to your Kubernetes cluster using `kubectl`. Later we'll
+During the workshop, we'll be deploying simple applications to your Kubernetes cluster using `kubectl`. Later we'll
 deploy the same application using `ArgoCD` and your new `git` repository. Meanwhile, we'll be checking out multiple
 tools to control and manage Kubernetes clusters.
 
@@ -11,11 +11,11 @@ tools to control and manage Kubernetes clusters.
 - You'll have a development Kubernetes cluster you can tinker with from your own `git repository`.
   This means you'll be able to _`deploy`_, _`update`_ and _`delete`_ applications remotely and `declaratively` from your
   own `git repository` to your development cluster.
-- You'll be able to deploy applications using `kubectl`, use `manifest files` and `ArgoCD` or `Git-Ops` to
+- You'll be able to deploy applications using `kubectl`, use `manifest files` and `ArgoCD` or `DevOps` to
   deploy your `manifests`.
 - You'll understand the difference between `declarative` vs `imperative` statements and the vital importance of proper
   `health checks` in conjunction with `livenessProbe`, `readinessProbe` and `startupProbe`.
-- Yes, Kubernetes has some deep dark `logic`, it's a declarative system that will try to maintain the desired `state`
+- Yes, Kubernetes has some deep dark declarative `logic`, it will try to maintain the desired `state`
   and might do some unexpected things if you're not careful.
 - You'll understand the difference between `Pods`, `Services`, `Ingress`, `Namespaces`, `ConfigMaps` and `Secrets`.
 - You'll know how to use tools like `Helm` and `Lens` to manage your cluster.
@@ -45,17 +45,17 @@ webkitallowfullscreen="true"></iframe>
 - Kubernetes utilizes Custom Resource Definitions (CRDs) for extendability.
 - CRDs allow extendability for the Kubernetes API by creating new resources classes.
 
-This allows developers to create their own resources or controllers to manage these resources.
+This allows developers to create their own resources or controllers to manage with their own operator running inside
+your cluster.
 
 For example, the ArgoCD operator creates a new resource called an Application. This resource can be used to define
-applications and their configuration in a declarative way. It's then up to the ArgoCD operator to manage these
-applications and ensure they're in the desired state.
+applications and their configuration declaratively. It's then up to the ArgoCD operator to manage these
+applications and ensure they're in their desired state.
 
 > [!TIP]
 > It's important to understand that CRD's are methods to extend the Kubernetes API and create new resources. This
-> concept
-> is used in many operators, controllers, helm charts, ingress classes and storage classes to create new resources and
-> manage them individually.
+> concept is used in many operators, controllers, helm charts, ingress classes and storage classes to create new
+> resources and manage them individually.
 
 ### Declarative vs Imperative
 
@@ -99,11 +99,11 @@ Translation). Inside this `Pod` containers can rely on local DNS services to fin
 namespaces.
 
 Since networking and state is separate and atomic this means you can run multiple replica's of the same Pod and
-increase availability. Without the need to worry about state or networking from a container perspective.
+increase availability. Without the need to worry about state or networking from the perspective of a container.
 
 ### Pods expose their ports to Services
 
-Services provide a method to expose applications running on a set of Pod replica's as a network service.
+Services allow you to expose applications running on a set of Pod replica's as a network service.
 Services are mostly abstraction/glue for Pods and Ingress. They provide a stable endpoint for Pods and Ingress to
 interconnect.
 
@@ -118,18 +118,19 @@ termination using [Cert Manager](https://cert-manager.io/) and the [Let's Encryp
 Another important concept in Kubernetes is Namespaces. Namespaces are used to divide cluster resources between
 different tenants, teams or applications.
 
-It's a powerful tool to divide resources and provides isolation between different applications. Commonly used to
-divide resources between different environments like development, staging and production.
-Ideally the only difference between staging and production should be a namespace Configmap and Secrets.
+The `default` namespace is the place for objects with no other namespace. It's important to note that
+namespaces are not your security boundary, just methods to divide resources and provide `naming` isolation between
+identical deployments.
+It's important to note that resources in different namespaces can communicate with each other and .
 
-The `default` namespace is the default namespace for objects with no other namespace. It's important to note that
-namespaces are not a security boundary, just methods to divide resources and provide isolation between different
-applications. It's important to note that resources in different namespaces can communicate with each other.
+A powerful tool to divide resources. Ideally the only difference between staging and production environments would
+be your Configmap and Secrets.
 
 ### ConfigMaps and Secrets
 
-ConfigMaps are a Kubernetes resources that allows decoupled configuration artifacts from image content in an
-effort to keep containerized applications portable.
+ConfigMaps provide a great pattern to configure your containers from the namespace they started in, you can use them
+to mount files, set environment values. More importantly, you can reuse the same ConfigMap for different environments
+and refer to this config map's keys to provision your deployment and much more.
 
 When you need to store sensitive information, such as passwords, OAuth tokens and SSH keys, you can use Secrets.
 If you need to store non-sensitive configuration data, you can use ConfigMaps.
@@ -139,22 +140,22 @@ drained/restarted to reload the latest environment configuration changes.
 
 ## The Workshop
 
-We're going to deploy a simple application to a Kubernetes cluster using `kubectl`,
+We're going to deploy a simple application to your cluster using `kubectl`,
 then we'll deploy the same application using `ArgoCD`,
-along the way we'll be checking out multiple tools to configure a Kubernetes cluster.
+along the way we'll be checking out multiple tools to configure your Kubernetes cluster.
 
-- We'll end up with a cluster you can tinker with from your own git repository.
-- It follows `Git-Ops` patterns using Git repositories as the source of _truth_ that defines the desired state.
-  ArgoCD is very declarative and all it's configuration is stored in Git repositories.
-- This won't be a deep dive into Kubernetes, but it will give you a good understanding of the basics and how to deploy
-  applications using `kubectl` and `ArgoCD`.
+- We'll end up with your own cluster you can tinker with from your personal git repository.
+- It follows `DevOps` patterns where we use Git repositories as the source of _truth_ that defines the desired state of
+  our deployments. ArgoCD is very declarative and all configuration can be stored your Git repository.
+- This won't be some deep dive into Kubernetes, it will teach you some basics interacting with `Kubernetes` and how to 
+  deploy applications using `kubectl` and `ArgoCD`.
 
 Let's get started:
 
 ### Clone the workshop repository
 
-Browse to [Git Ops Workshop](https://github.com/jonnyhoeven/workshop/fork) to create your own fork,
-we'll be using this fork later on to steer your local cluster.
+Browse to this [Workshop](https://github.com/jonnyhoeven/workshop/fork) to create your fork,
+later on we'll be using this fork to steer your local cluster.
 
 Clone your forked repo to your local machine.
 
@@ -171,7 +172,7 @@ select `clone from GitHub`, then press Enter.
 ```
 
 ```bash [Bash]
-git clone https://github.com/YOUR-USERNAME/workshop
+git clone https://github.com/<USERNAME>/workshop
 cd workshop
 ```
 
@@ -179,12 +180,12 @@ cd workshop
 
 ### Software requirements
 
-Please note that this workshop is designed to run on a Linux or Windows machine with WSL2 installed.
-It's suggested to use apt based distro's like Debian, Ubuntu or Mint.
+Please note that this workshop is designed to run on Linux or Windows machines with `WSL2` installed.
+It's suggested to use `apt` based distro's like `Debian`, `Ubuntu` or `Mint`.
 
 #### WSL (Windows Subsystem for Linux)
 
-::: info Install WSL on Windows to Run Linux commands
+::: info Install `WSL2` on Windows to Run Linux commands
 
 ```powershell
 wsl --install
@@ -215,8 +216,8 @@ sudo usermod -aG docker $USER
 
 #### Kubectl
 
-Kubectl is a command line tool for controlling Kubernetes clusters. It's used to deploy, inspect and
-manage cluster.
+Kubectl is the command line tool for controlling Kubernetes clusters. It's used to deploy, inspect and
+manage your cluster.
 
 ::: info Install kubectl
 
@@ -308,7 +309,7 @@ kubectl get nodes
 
 ### Access the cluster using Lens
 
-Setup Lens to use the new cluster by adding a new cluster from the [kubeconfig.yaml](kubeconfig.yaml) file.
+Setup Lens to use the new cluster by adding your new [kubeconfig.yaml](kubeconfig.yaml) file.
 ::: info View contents of kubeconfig file and add to Lens
 
 ```bash
@@ -328,7 +329,7 @@ Browse around, check the `Nodes`, `Namespaces`, `Custom Resource Definitions` an
 Namespaces divide cluster resources and quota's.
 They're intended for use in environments with many users spread across multiple teams or
 projects. Namespaces are not a security feature, to isolate different users or namespaces from each other we need tools
-like [Loft](https://loft.sh/) that leverage RBAC (Role based account control) to securely isolate namespaces
+like [Loft](https://loft.sh/) that leverage RBAC (Role Based Account Control) to securely isolate your namespaces
 across teams.
 
 By default, Kubernetes starts with four initial namespaces:
@@ -383,7 +384,7 @@ The result should look like this:
 
 ```text
 NAME    READY   UP-TO-DATE   AVAILABLE   AGE
-nginx   1/1     1            1           2m3s
+nginx   1/1     1            1           **s
 ```
 
 Check the `pod` status with kubectl
@@ -392,11 +393,11 @@ Check the `pod` status with kubectl
 kubectl get pod -n workshop
 ```
 
-The result should somewhat look like this:
+The result should look like this:
 
 ```text
 # NAME                     READY   STATUS    RESTARTS   AGE
-# nginx-7854ff8877-z9j2t   1/1     Running   0          49s
+# nginx-**********-*****   1/1     Running   0          **s
 ```
 
 Find this `deployment` in `lens` and check the `pod` status.
@@ -451,7 +452,7 @@ kubectl delete namespace workshop
 
 ### Deploy using manifest files from code
 
-Normally you'll want to deploy using a manifest files, so you can keep track of your `deployments` and
+Normally you'll want to deploy manifest files, so you can keep track of your `deployments` and
 easily replicate them across different clusters or namespaces.
 
 ::: warning Before starting
@@ -472,7 +473,7 @@ kubectl apply -f ./namespace/cat-app/cat-app.Service.yaml -n cat-app
 kubectl apply -f ./namespace/cat-app/cat-app.Ingress.yaml -n cat-app
 ```
 
-You can deploy a complete folder using Kubectl, this will deploy all the files in one folder, try it.
+You can also deploy complete folders using Kubectl, this will deploy all the files in one folder, try it.
 
 ```bash
 kubectl apply -f ./namespace/cat-app/ -n cat-app
@@ -480,8 +481,8 @@ kubectl apply -f ./namespace/cat-app/ -n cat-app
 
 - Get familiar with the files in the `cat-app` folder and try to understand what each file does.
 - Notice the URL in the cat-app.Ingress.yaml file, this is the `URL`, `Virtual Host` you'll use to access the cat-app.
-- Notice the `Service` file, this is the service that will be used to expose the cat-app to the internet. it uses the
-  type `ClusterIP`.
+- Notice the `Service` file, this is the service that'll be used to expose the cat-app to the internet. It uses the
+  type `ClusterIP` for now.
 
 Check the `deployment`
 
@@ -508,21 +509,18 @@ kubectl get ingress -n cat-app
 ```
 
 Ingress is a collection of classes that allow inbound connections to reach the cluster services. It can be configured to
-give services externally-reachable URLs, load balance traffic, terminate SSL, offer name-based virtual hosts and
-more.
+give services externally reachable URLs, load balance traffic, terminate SSL and even integrate with oauth middleware.
 
 ```text
 NAME      CLASS    HOSTS               ADDRESS                            PORTS   AGE
-cat-app   <none>   cat-app.k3d.local   172.xx.0.2,172.xx.0.3,172.xx.0.4   80      2m1s
+cat-app   <none>   cat-app.k3d.local   172.xx.0.2,172.xx.0.3,172.xx.0.4   80      **s
 ```
 
 - Notice the `cat-app.k3d.local` URL, this is the URL you'll use to access the cat-app.
 - Notice the `ADDRESS` field, this is the IP address of the service, it's a `ClusterIP` type service and is available on
   all Kubernetes Nodes in the cluster. If a node does not have the cat-app `pod`, it will forward the request to other
-  nodes that host the cat-app `pod` selector.
-- More commonly you'll see `LoadBalancer` type services, which use cloud provider's or on premises load balancers to
-  expose the services to other networks/internet.
-  :::
+  nodes with deployments that host services with the `cat-app` deployment selection tag.
+- More commonly you'll see `LoadBalancer` type services, which use cloud provider or edge network load balancer
 
 ### Accessing the cat-app
 
@@ -550,7 +548,7 @@ Add the output from the `hosthelp.sh` command to your hosts file.
 Start notepad as administrator, open the file `C:\Windows\System32\drivers\etc\hosts`.
 :::
 
-::: info Linux users (Not for WSL)
+::: info Linux users (Not for WSL2 users)
 
 ```bash
 sudo nano /etc/hosts
@@ -678,12 +676,12 @@ Lookup the [cat-app in ArgoCD](https://argocd.k3d.local/applications/argocd/cat-
 Press the `sync` button to sync the application with your forked repository.
 Your cat app is now deployed using ArgoCD.
 
-### ArgoCD can Git Ops itself
+### ArgoCD can DevOps itself
 
 We just deployed the cat app using ArgoCD, but we still needed Kubectl to apply the application. ArgoCD can also manage
-itself using Git-Ops.
+itself using DevOps.
 
-::: info Setup ArgoCD using Git-Ops
+::: info Setup ArgoCD using DevOps
 Open the [argocd.Application](/namespace/argocd/application/argocd.Application.yaml) and change `repoURL` to your forked
 repository.
 
@@ -738,7 +736,7 @@ kubectl apply -f ./namespace/argocd/application/argocd.Application.yaml -n argoc
 Since we added the application to the repository and sync is enabled in the ArgoCD Application manifest file, it will
 automatically maintain the ArgoCD namespace based on the repository state.
 
-::: info Change replicas using Git-Ops
+::: info Change replicas using DevOps
 
 Try deleting the cat-app in the ArgoCD web ui and see what happens
 
@@ -792,8 +790,9 @@ Since we have a Kubernetes cluster that allows you to define the state from your
 creative.
 
 - Open a shell to a container
-
-- Create a volume claim for persistent storage
+  Click on a pod in lens, see top right.
+- Read container logs
+- Create a persistent volume claim.
 
 - Check out cool helm charts you can install within minutes.
   [awesome-helm](https://github.com/cdwv/awesome-helm)
