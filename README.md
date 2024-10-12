@@ -147,7 +147,7 @@ along the way we'll be checking out multiple tools to configure your Kubernetes 
 - We'll end up with your own cluster you can tinker with from your personal git repository.
 - It follows `DevOps` patterns where we use Git repositories as the source of _truth_ that defines the desired state of
   our deployments. ArgoCD is very declarative and all configuration can be stored your Git repository.
-- This won't be some deep dive into Kubernetes, it will teach you some basics interacting with `Kubernetes` and how to 
+- This workshop won't dive deep into Kubernetes, it will teach you some basics interacting with `Kubernetes` and how to
   deploy applications using `kubectl` and `ArgoCD`.
 
 Let's get started:
@@ -374,7 +374,7 @@ Resulting in naming conflicts and hard to find, hard to manage resources.
 kubectl create deployment nginx --image=nginx -n workshop
 ```
 
-Check the `deployment` kubectl
+Check the `deployment`, using kubectl:
 
 ```bash
 kubectl get deployment -n workshop
