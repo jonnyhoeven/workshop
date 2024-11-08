@@ -2,8 +2,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: cat-app
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: Dynamically Detected Homepage
+    gethomepage.dev/group: Operations
+    gethomepage.dev/icon: cat.png
+    gethomepage.dev/name: Cat App
 spec:
-  ingressClassName:
   rules:
     - host: cat-app.k3d.local
       http:
