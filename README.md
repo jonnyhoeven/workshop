@@ -11,7 +11,7 @@ tools to control and manage Kubernetes clusters.
 - You'll have a development Kubernetes cluster you can tinker with from your own `git repository`.
   This means you'll be able to _`deploy`_, _`update`_ and _`delete`_ applications remotely and `declaratively` from your
   own `git repository` to your development cluster.
-- You'll be able to deploy applications using `kubectl`, use `manifest files` and `ArgoCD` or `DevOps` to
+- You'll be able to deploy applications using `kubectl`, use `manifest files` and `ArgoCD` or `Infrastructure as Code` to
   deploy your `manifests`.
 - You'll understand the difference between `declarative` vs `imperative` statements and the vital importance of proper
   `health checks` in conjunction with `livenessProbe`, `readinessProbe` and `startupProbe`.
@@ -129,11 +129,11 @@ be your Configmap and Secrets.
 ### ConfigMaps and Secrets
 
 ConfigMaps provide a great pattern to configure your containers from the namespace they started in, you can use them
-to mount files, set environment values. More importantly, you can reuse the same ConfigMap for different environments
+to mount files, set environment values. More importantly, you can duplicate the same ConfigMap for different environments
 and refer to this config map's keys to provision your deployment and much more.
 
-When you need to store sensitive information, such as passwords, OAuth tokens and SSH keys, you can use Secrets.
-If you need to store non-sensitive configuration data, you can use ConfigMaps.
+When you need to store sensitive information, such as passwords, OAuth tokens and SSH keys, use Secrets.
+If you need to store non-sensitive configuration data, use ConfigMaps.
 
 ConfigMaps and Secrets can be mounted as files or environment variables in a Pod. Containers in a pod might need to be
 drained/restarted to reload the latest environment configuration changes.
@@ -145,7 +145,7 @@ then we'll deploy the same application using `ArgoCD`,
 along the way we'll be checking out multiple tools to configure your Kubernetes cluster.
 
 - We'll end up with your own cluster you can tinker with from your personal git repository.
-- It follows `DevOps` patterns where we use Git repositories as the source of _truth_ that defines the desired state of
+- It follows `Infrastructure as Code` patterns where we use Git repositories as the source of _truth_ that defines the desired state of
   our deployments. ArgoCD is very declarative and all configuration can be stored your Git repository.
 - This workshop won't dive deep into Kubernetes, it will teach you some basics interacting with `Kubernetes` and how to
   deploy applications using `kubectl` and `ArgoCD`.
@@ -269,7 +269,7 @@ We'll name this cluster `workshop`.
 sudo k3d cluster create workshop --agents 2 --servers 1
 ```
 
-Once completed, you can check the status of your cluster by running:
+Once completed, check the status of your cluster by running:
 
 ```bash
 sudo k3d cluster list
@@ -278,7 +278,7 @@ sudo k3d cluster list
 [Reference](https://k3d.io/v5.3.0/usage/commands/k3d_cluster_create/)
 :::
 
-### Access the cluster using Kubectl
+### Access the cluster with Kubectl
 
 Kubeconfig is a file that holds information about clusters, including the hostname, certificate authority and
 authentication information. It's located at `~/.kube/config` and can be used by other
@@ -562,7 +562,7 @@ Open [http://cat-app.k3d.local/](https://cat-app.k3d.local/), you should see the
 
 ::: danger Before continuing:
 Make sure you forked this repo and cloned your forked repo to your local machine before editing files.
-Later on we'll use your fork to steer your local cluster.
+Later on we'll use your fork to steer your local cluster using ArgoCD.
 :::
 
 ::: info Create the ArgoCD namespace using Kubectl:
@@ -620,7 +620,7 @@ kubectl apply -f ./namespace/argocd/repository/argocd.Repository.yaml -n argocd
 Your forked [repository](https://argocd.k3d.local/settings/repos) is now visible in the ArgoCD web ui.
 
 ::: info Setup application
-Open the [cat-app.Application](namespace/argocd/application/cat-app.Application.yaml) file and change the `repoURL` to
+Open the [cat-app Application manifest file](namespace/argocd/application/cat-app.Application.yaml) and change the `repoURL` to
 your forked repository.
 
 ```yaml
@@ -676,13 +676,13 @@ Lookup the [cat-app in ArgoCD](https://argocd.k3d.local/applications/argocd/cat-
 Press the `sync` button to sync the application with your forked repository.
 Your cat app is now deployed using ArgoCD.
 
-### ArgoCD can DevOps itself
+### ArgoCD can GitOps itself
 
 We just deployed the cat app using ArgoCD, but we still needed Kubectl to apply the application. ArgoCD can also manage
-itself using DevOps.
+itself using GitOps.
 
-::: info Setup ArgoCD using DevOps
-Open the [argocd.Application](/namespace/argocd/application/argocd.Application.yaml) and change `repoURL` to your forked
+::: info Setup ArgoCD using GitOps
+Open the [argocd.Application manifest file](/namespace/argocd/application/argocd.Application.yaml) and change `repoURL` to your forked
 repository.
 
 ```yaml
