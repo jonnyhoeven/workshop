@@ -11,9 +11,9 @@ tools to control and manage Kubernetes clusters.
 - You'll have a development Kubernetes cluster you can tinker with from your own `git repository`.
   This means you'll be able to _`deploy`_, _`update`_ and _`delete`_ applications remotely and `declaratively` from your
   own `git repository` to your development cluster.
-- You'll be able to deploy applications using `kubectl`, use `manifest files` and `ArgoCD` or `Infrastructure as Code` to
-  deploy your `manifests`.
-- You'll understand the difference between `declarative` vs `imperative` statements and the vital importance of proper
+- You'll be able to use `kubectl`.
+- Use`ArgoCD` or `Infrastructure as Code` to apply `kubectl` commands from code.
+- Understand the difference between `declarative` vs `imperative` statements and the vital importance of proper
   `health checks` in conjunction with `livenessProbe`, `readinessProbe` and `startupProbe`.
 - Yes, Kubernetes has some deep dark declarative `logic`, it will try to maintain the desired `state`
   and might do some unexpected things if you're not careful.
@@ -129,8 +129,8 @@ be your Configmap and Secrets.
 ### ConfigMaps and Secrets
 
 ConfigMaps provide a great pattern to configure your containers from the namespace they started in, you can use them
-to mount files, set environment values. More importantly, you can duplicate the same ConfigMap for different environments
-and refer to this config map's keys to provision your deployment and much more.
+to mount files, set environment values. More importantly, you can duplicate the same ConfigMap for different
+environments and refer to this config map's keys to provision your deployment and much more.
 
 When you need to store sensitive information, such as passwords, OAuth tokens and SSH keys, use Secrets.
 If you need to store non-sensitive configuration data, use ConfigMaps.
@@ -145,8 +145,9 @@ then we'll deploy the same application using `ArgoCD`,
 along the way we'll be checking out multiple tools to configure your Kubernetes cluster.
 
 - We'll end up with your own cluster you can tinker with from your personal git repository.
-- It follows `Infrastructure as Code` patterns where we use Git repositories as the source of _truth_ that defines the desired state of
-  our deployments. ArgoCD is very declarative and all configuration can be stored your Git repository.
+- It follows `Infrastructure as Code` patterns where we use Git repositories as the source of _truth_ that defines the
+  desired state of our deployments. ArgoCD is very declarative and all configuration can be stored inside your Git
+  repository.
 - This workshop won't dive deep into Kubernetes, it will teach you some basics interacting with `Kubernetes` and how to
   deploy applications using `kubectl` and `ArgoCD`.
 
@@ -155,7 +156,6 @@ Let's get started:
 ### Clone the workshop repository
 
 Browse to this [Workshop](https://github.com/jonnyhoeven/workshop/fork) to create your fork,
-later on we'll be using this fork to steer your local cluster.
 
 Clone your forked repo to your local machine.
 
@@ -309,15 +309,16 @@ kubectl get nodes
 
 ### Access the cluster using Lens
 
-Setup Lens to use the new cluster by adding your new [kubeconfig.yaml](kubeconfig.yaml) file.
-::: info View contents of kubeconfig file and add to Lens
+Retrieve and import your `kubeconfig` file into lens.
+
+::: info View contents of `kube/config` file and add to Lens
 
 ```bash
 cat ~/.kube/config
 ```
 
 Open Lens, Click on `Catalog` (Top left, second from top) → `Clusters` → `Add Cluster (+) icon` →
-`Add Cluster from Kubeconfig` → Paste the contents of your kubeconfig file → `Add Clusters`
+`Add Cluster from Kubeconfig` → Paste the contents of your kubeconfig file → `Add Clusters`.
 :::
 
 Now you can access the `k3d-workshop` cluster using Lens.
@@ -327,10 +328,9 @@ Browse around, check the `Nodes`, `Namespaces`, `Custom Resource Definitions` an
 ### Some notes about Namespaces
 
 Namespaces divide cluster resources and quota's.
-They're intended for use in environments with many users spread across multiple teams or
-projects. Namespaces are not a security feature, to isolate different users or namespaces from each other we need tools
-like [Loft](https://loft.sh/) that leverage RBAC (Role Based Account Control) to securely isolate your namespaces
-across teams.
+They're intended for use in environments with many users spread across multiple teams or projects. Namespaces are not a
+security feature, to isolate different users or namespaces from each other we need tools like [Loft](https://loft.sh/)
+that leverage RBAC (Role Based Account Control) to securely isolate your namespaces across teams.
 
 By default, Kubernetes starts with four initial namespaces:
 
@@ -387,7 +387,7 @@ NAME    READY   UP-TO-DATE   AVAILABLE   AGE
 nginx   1/1     1            1           **s
 ```
 
-Check the `pod` status with kubectl
+Check the `pod` status with kubectl:
 
 ```bash
 kubectl get pod -n workshop
@@ -403,7 +403,7 @@ The result should look like this:
 Find this `deployment` in `lens` and check the `pod` status.
 As you can see, the `deployment` and `pod` replica is up and running.
 
-Try deleting the `pod` and see what happens.
+Try deleting the `pod` and see what happens:
 
 ```bash
 kubectl delete pod $(kubectl get pods -n workshop -o jsonpath="{.items[*].metadata.name}") -n workshop
@@ -412,7 +412,7 @@ kubectl delete pod $(kubectl get pods -n workshop -o jsonpath="{.items[*].metada
 The `pod` gets deleted and a new one is created to replace it. This is because the `deployment` is set to have 1
 replica, so if the `pod` is deleted, a new one is created to replace it.
 
-List the `pods` again
+List the `pods` again:
 
 ```bash
 kubectl get pod -n workshop
@@ -508,8 +508,8 @@ Check the `ingress`
 kubectl get ingress -n cat-app
 ```
 
-Ingress is a collection of classes that allow inbound connections to reach the cluster services. It can be configured to
-give services externally reachable URLs, load balance traffic, terminate SSL and even integrate with oauth middleware.
+Ingress allows inbound connections to reach the cluster services. It can be configured to give services externally
+reachable URLs, load balance traffic, terminate SSL and even integrate with oauth middleware.
 
 ```text
 NAME      CLASS    HOSTS               ADDRESS                            PORTS   AGE
@@ -520,7 +520,7 @@ cat-app   <none>   cat-app.k3d.local   172.xx.0.2,172.xx.0.3,172.xx.0.4   80    
 - Notice the `ADDRESS` field, this is the IP address of the service, it's a `ClusterIP` type service and is available on
   all Kubernetes Nodes in the cluster. If a node does not have the cat-app `pod`, it will forward the request to other
   nodes with deployments that host services with the `cat-app` deployment selection tag.
-- More commonly you'll see `LoadBalancer` type services, which use cloud provider or edge network load balancer
+- More commonly you'll see `LoadBalancer` type services, which use cloud provider or edge network load balancers.
 
 ### Accessing the cat-app
 
@@ -562,10 +562,9 @@ Open [http://cat-app.k3d.local/](https://cat-app.k3d.local/), you should see the
 
 ::: danger Before continuing:
 Make sure you forked this repo and cloned your forked repo to your local machine before editing files.
-Later on we'll use your fork to steer your local cluster using ArgoCD.
 :::
 
-::: info Create the ArgoCD namespace using Kubectl:
+::: info Create the ArgoCD namespace using Kubectl
 
 ```bash
 kubectl create namespace argocd
@@ -584,7 +583,7 @@ text. The initial password is randomly generated and unique to each ArgoCD insta
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 --decode
 ```
 
-::: info Ignore the `%` when pasting the password.
+::: info Ignore `%` signs when pasting the password
 :::
 Login to [argocd.k3d.local](https://argocd.k3d.local)
 
@@ -609,7 +608,7 @@ stringData:
   url: https://github.com/<user>/workshop.git // [!code focus]
 ```
 
-Apply the changed Repository using kubectl.
+Apply the changed Repository using kubectl:
 
 ```bash
 kubectl apply -f ./namespace/argocd/repository/argocd.Repository.yaml -n argocd
@@ -617,11 +616,11 @@ kubectl apply -f ./namespace/argocd/repository/argocd.Repository.yaml -n argocd
 
 :::
 
-Your forked [repository](https://argocd.k3d.local/settings/repos) is now visible in the ArgoCD web ui.
+Your forked [repository](https://argocd.k3d.local/settings/repos) is now visible within ArgoCD.
 
 ::: info Setup application
-Open the [cat-app Application manifest file](namespace/argocd/application/cat-app.Application.yaml) and change the `repoURL` to
-your forked repository.
+Open the [cat-app Application manifest file](namespace/argocd/application/cat-app.Application.yaml) and change
+the `repoURL` to your forked repository:
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -655,7 +654,7 @@ spec:
   revisionHistoryLimit: 1
 ```
 
-Push this change to your forked repository.
+Push this change to your forked repository:
 
 ```bash
 git add .
@@ -663,7 +662,7 @@ git commit -m "New fork"
 git push
 ```
 
-Apply the changed Application to the ArgoCD namespace.
+Apply the changed Application to the ArgoCD namespace:
 
 ```bash
 kubectl apply -f ./namespace/argocd/application/cat-app.Application.yaml -n argocd
@@ -673,17 +672,16 @@ kubectl apply -f ./namespace/argocd/application/cat-app.Application.yaml -n argo
 
 Lookup the [cat-app in ArgoCD](https://argocd.k3d.local/applications/argocd/cat-app)
 
-Press the `sync` button to sync the application with your forked repository.
-Your cat app is now deployed using ArgoCD.
+Press the `sync` button to sync the application with your forked repository: Your cat app is now deployed using ArgoCD.
 
 ### ArgoCD can GitOps itself
 
 We just deployed the cat app using ArgoCD, but we still needed Kubectl to apply the application. ArgoCD can also manage
-itself using GitOps.
+itself using Infrastructure as Code principles.
 
 ::: info Setup ArgoCD using GitOps
-Open the [argocd.Application manifest file](/namespace/argocd/application/argocd.Application.yaml) and change `repoURL` to your forked
-repository.
+Open the [argocd.Application manifest file](/namespace/argocd/application/argocd.Application.yaml) and change `repoURL`
+to your forked repository.
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -717,7 +715,7 @@ spec:
   revisionHistoryLimit: 1
 ```
 
-Commit and push the changes to your fork
+Commit and push the changes to your fork:
 
 ```bash
 git add .
@@ -725,7 +723,7 @@ git commit -m "Change"
 git push
 ```
 
-Apply the application to ArgoCD
+Apply the application to ArgoCD:
 
 ```bash
 kubectl apply -f ./namespace/argocd/application/argocd.Application.yaml -n argocd
@@ -738,11 +736,10 @@ automatically maintain the ArgoCD namespace based on the repository state.
 
 ::: info Change replicas using DevOps
 
-Try deleting the cat-app in the ArgoCD web ui and see what happens
+Try deleting the cat-app in the ArgoCD web ui and see what happens, Argo cd notices that the cat-app is missing and will
+automatically recreate everything defined by code.
 
-Argo cd notices that the cat-app is missing and will automatically recreate/heal.
-
-Edit [cat-app.Deployment.yaml](namespace/cat-app/cat-app.Deployment.yaml) and change the `replicas` to 3
+Edit [cat-app.Deployment.yaml](namespace/cat-app/cat-app.Deployment.yaml) and change the `replicas` to 3.
 
 ```yaml
 apiVersion: apps/v1
@@ -771,7 +768,7 @@ spec:
               protocol: TCP
 ```
 
-Commit and push the changes to your fork
+Commit and push the changes to your fork:
 
 ```bash
 git add .
@@ -782,20 +779,17 @@ git push
 :::
 
 Open [cat-app network resources view](https://argocd.k3d.local/applications/argocd/cat-app?view=network&resource=)
-Press the refresh button to check for git updates, the cat-app `deployment` is now updating to 3 replicas
+Press the refresh button to check for git updates, the cat-app `deployment` is now updating to 3 replicas.
 
 ### Some ideas to try
 
 Since we have a Kubernetes cluster that allows you to define the state from your own git repository, why not be
 creative.
 
-- Open a shell to a container
-  Click on a pod in lens, see top right.
-- Read container logs
-- Create a persistent volume claim.
-
-- Check out cool helm charts you can install within minutes.
-  [awesome-helm](https://github.com/cdwv/awesome-helm)
+- Open a shell to a container, click on a pod in lens, see top right.
+- Read some container logs.
+- Create persistent volume claims and use them.
+- Maybe check out some helm charts to install [awesome-helm](https://github.com/cdwv/awesome-helm) charts.
 
 If you have any questions or suggestions please let me know.
 
@@ -819,7 +813,7 @@ rm ~/.kube/config
 mv ~/.kube/config<UUID> ~/.kube/config
 ```
 
-- Restore your `hosts` file to its original state.
+- Restore your `hosts` file to its original state:
 
 ```bash
 sudo nano /etc/hosts
