@@ -74,7 +74,7 @@ Health checks are integral to determine if a container is healthy or not. Kubern
 checks: `livenessProbe`, `readinessProbe` and `startupProbe`.
 
 Kubernetes utilizes `Health Probes` to determine container liveness. If a container isn't healthy,
-Kubernetes will restart the whole `Pod`. After a number of specified back-off periods while restarting the pod.
+Kubernetes will restart the whole `Pod`. After a number of specified back-off periods while restarting the 'Pod'.
 Kubernetes will not send anymore traffic to that `pod`.
 
 Developers can define the health-result of their application and Kubernetes will take care of the rest.
@@ -87,24 +87,24 @@ Developers can define the health-result of their application and Kubernetes will
 
 ### Containers reside in Pods
 
-A Pod is the smallest deployable unit in Kubernetes. A Pod represents a single instance of a service within your
-cluster. Pods contain one or more containers. When a Pod runs multiple containers, the
+A 'Pod' is the smallest deployable unit in Kubernetes. A 'Pod' represents a single instance of a service within your
+cluster. 'Pods' contain one or more containers. When a 'Pod' runs multiple containers, the
 containers are managed as a single entity and share the same resources.
 
-More importantly, containers in a pod share the same lifecycle, they're started together, stopped together and are
+More importantly, containers in a 'Pod' share the same lifecycle, they're started together, stopped together and are
 considered atomic.
 
-A Pod can be considered a separate subnetwork, containers within a pod are effectively behind NAT (Network Address
+A 'Pod' can be considered a separate subnetwork, containers within a 'Pod' are effectively behind NAT (Network Address
 Translation). Inside this `Pod` containers can rely on local DNS services to find hostnames in their own or different
 namespaces.
 
-Since networking and state is separate and atomic this means you can run multiple replica's of the same Pod and
+Since networking and state is separate and atomic this means you can run multiple replica's of the same 'Pod' and
 increase availability. Without the need to worry about state or networking from the perspective of a container.
 
 ### Pods expose their ports to Services
 
-Services allow you to expose applications running on a set of Pod replica's as a network service.
-Services are mostly abstraction/glue for Pods and Ingress. They provide a stable endpoint for Pods and Ingress to
+Services allow you to expose applications running on a set of 'Pod' replica's as a network service.
+Services are mostly abstraction/glue for 'Pods' and Ingress. They provide a stable endpoint for 'Pods' and Ingress to
 interconnect.
 
 ### Ingress connects Services to the outside world
@@ -121,9 +121,9 @@ different tenants, teams or applications.
 The `default` namespace is the place for objects with no other namespace. It's important to note that
 namespaces are not your security boundary, just methods to divide resources and provide `naming` isolation between
 identical deployments.
-It's important to note that resources in different namespaces can communicate with each other and .
+It's important to note that resources in different namespaces can communicate with each other.
 
-A powerful tool to divide resources. Ideally the only difference between staging and production environments would
+Ideally the only difference between staging and production environments would
 be your Configmap and Secrets.
 
 ### ConfigMaps and Secrets
@@ -135,7 +135,7 @@ environments and refer to this config map's keys to provision your deployment an
 When you need to store sensitive information, such as passwords, OAuth tokens and SSH keys, use Secrets.
 If you need to store non-sensitive configuration data, use ConfigMaps.
 
-ConfigMaps and Secrets can be mounted as files or environment variables in a Pod. Containers in a pod might need to be
+ConfigMaps and Secrets can be mounted as files or environment variables in a 'Pod'. Containers in a 'Pod' might need to be
 drained/restarted to reload the latest environment configuration changes.
 
 ## The Workshop
@@ -148,10 +148,10 @@ along the way we'll be checking out multiple tools to configure your Kubernetes 
 - It follows `Infrastructure as Code` patterns where we use Git repositories as the source of _truth_ that defines the
   desired state of our deployments. ArgoCD is very declarative and all configuration can be stored inside your Git
   repository.
-- This workshop won't dive deep into Kubernetes, it will teach you some basics interacting with `Kubernetes` and how to
+- This workshop won't dive deep into Kubernetes, it will teach you some basics interactions with `Kubernetes` and how to
   deploy applications using `kubectl` and `ArgoCD`.
 
-Let's get started:
+Let's get started:s
 
 ### Clone the workshop repository
 
@@ -197,7 +197,7 @@ wsl --install
 #### Docker
 
 Docker is a platform for developing, shipping and running applications. It allows you to package your application and
-dependencies into a container that can run on any machine.
+dependencies into a container that can run on most machines.
 
 ::: info Windows install
 Download & install [Docker Desktop](https://www.docker.com/products/docker-desktop/).
@@ -254,8 +254,8 @@ wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 #### Lens
 
 Lens is a Kubernetes IDE that allows you to manage, monitor and manipulate your clusters.
-It's a great tool to get a visual representation of your cluster and to manage your resources.
-Download and install [Lens](https://k8slens.dev/download)
+A great tool to get some visual representation from your clusters and to manage your resources.
+Download and install [Lens](https://k8slens.dev/download).
 
 ### Starting your Kubernetes cluster
 
@@ -280,11 +280,11 @@ sudo k3d cluster list
 
 ### Access the cluster with Kubectl
 
-Kubeconfig is a file that holds information about clusters, including the hostname, certificate authority and
+The 'Kubeconfig' is a file that holds information about clusters, including the hostname, certificate authority and
 authentication information. It's located at `~/.kube/config` and can be used by other
 applications to connect to the cluster. Keep this file secure, it's the **key** to your cluster.
 
-You can get the kubeconfig file from K3D by running:
+You can get the 'Kubeconfig' file from K3D by running:
 
 ::: info Retrieve and save kubeconfig file
 
@@ -801,13 +801,13 @@ If you have any questions or suggestions please let me know.
 sudo k3d cluster delete workshop 
 ```
 
-- You can also delete the kubeconfig file by running:
+- You can also delete the 'Kubeconfig' file by running:
 
 ```bash
 rm ~/.kube/config
 ```
 
-- Optionally restore the original kubeconfig file you had before by running:
+- Optionally restore the original 'Kubeconfig' file you had before by running:
 
 ```bash
 mv ~/.kube/config<UUID> ~/.kube/config
