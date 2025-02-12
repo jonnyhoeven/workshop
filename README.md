@@ -750,7 +750,7 @@ metadata:
     app: cat-app
   name: cat-app
 spec:
-  replicas: 1 // [!code focus]
+  replicas: 1 # // [!code focus]
   selector:
     matchLabels:
       app: cat-app
