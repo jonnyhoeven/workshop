@@ -91,15 +91,15 @@ A 'Pod' is the smallest deployable unit in Kubernetes. A 'Pod' represents a sing
 cluster. 'Pods' contain one or more containers. When a 'Pod' runs multiple containers, the
 containers are managed as a single entity and share the same resources.
 
-More importantly, containers in a 'Pod' share the same lifecycle, they're started together, stopped together and are
+More importantly, containers in a 'Pod' share the same lifecycle, they're started together, stopped together and
 considered atomic.
 
 A 'Pod' can be considered a separate subnetwork, containers within a 'Pod' are effectively behind NAT (Network Address
-Translation). Inside this `Pod` containers can rely on local DNS services to find hostnames in their own or different
+Translation). Inside a `Pod` containers can rely on local DNS services to find hostnames in their own or external
 namespaces.
 
-Since networking and state is separate and atomic this means you can run multiple replica's of the same 'Pod' and
-increase availability. Without the need to worry about state or networking from the perspective of a container.
+Since networking and state is separate and atomic. We can run multiple replica's of the same 'Pod' and
+increase availability. Without the need to worry about state or networking changes when your containers start.
 
 ### Pods expose their ports to Services
 
@@ -135,7 +135,8 @@ environments and refer to this config map's keys to provision your deployment an
 When you need to store sensitive information, such as passwords, OAuth tokens and SSH keys, use Secrets.
 If you need to store non-sensitive configuration data, use ConfigMaps.
 
-ConfigMaps and Secrets can be mounted as files or environment variables in a 'Pod'. Containers in a 'Pod' might need to be
+ConfigMaps and Secrets can be mounted as files or environment variables in a 'Pod'. Containers in a 'Pod' might need to
+be
 drained/restarted to reload the latest environment configuration changes.
 
 ## The Workshop
@@ -162,10 +163,10 @@ Clone your forked repo to your local machine.
 ::: code-group
 
 ```markdown [VSCode]
-Open the command palette with the key 
-combination of `Ctrl` + `Shift` + `P`.
-At the command palette prompt, enter `gitclone`, 
-select the Git: `Clone` command, 
+Open the command palette with the key
+combination:  `Ctrl` + `Shift` + `P`.
+At the command palette prompt, enter `gitclone`,
+select the Git: `Clone` command,
 then select `Clone from GitHub` and press Enter.
 When prompted for the Repository URL,
 select `clone from GitHub`, then press Enter.
@@ -818,3 +819,5 @@ mv ~/.kube/config<UUID> ~/.kube/config
 ```bash
 sudo nano /etc/hosts
 ```
+
+<ArticleFooter :frontmatter="$frontmatter"/>
