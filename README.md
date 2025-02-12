@@ -605,8 +605,8 @@ metadata:
   labels:
     argocd.argoproj.io/secret-type: repository
 stringData:
-  type: git
-  url: https://github.com/<user>/workshop.git // [!code focus]
+  type: "git"
+  url: "https://github.com/<user>/workshop.git // [!code focus]"
 ```
 
 Apply the changed Repository using kubectl:
