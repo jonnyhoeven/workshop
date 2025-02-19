@@ -74,7 +74,7 @@ Health checks are integral to determine if a container is healthy or not. Kubern
 checks: `livenessProbe`, `readinessProbe` and `startupProbe`.
 
 Kubernetes utilizes `Health Probes` to determine container liveness. If a container isn't healthy,
-Kubernetes will restart the whole `Pod`. After a number of specified back-off periods while restarting the 'Pod'.
+Kubernetes will restart the whole `Pod`. After a number of specified back-off periods while restarting the `Pod`.
 Kubernetes will not send anymore traffic to that `pod`.
 
 Developers can define the health-result of their application and Kubernetes will take care of the rest.
@@ -87,23 +87,23 @@ Developers can define the health-result of their application and Kubernetes will
 
 ### Containers reside in Pods
 
-A 'Pod' is the smallest deployable unit in Kubernetes. A 'Pod' represents a single instance of a service within your
-cluster. 'Pods' contain one or more containers. When a 'Pod' runs multiple containers, the
+A `Pod` is the smallest deployable unit in Kubernetes. A `Pod` represents a single instance of a service within your
+cluster. 'Pods' contain one or more containers. When a `Pod` runs multiple containers, the
 containers are managed as a single entity and share the same resources.
 
-More importantly, containers in a 'Pod' share the same lifecycle, they're started together, stopped together and
+More importantly, containers in a `Pod` share the same lifecycle, they're started together, stopped together and
 considered atomic.
 
-A 'Pod' can be considered a separate subnetwork, containers within a 'Pod' are effectively behind NAT (Network Address
+A `Pod` can be considered a separate subnetwork, containers within a `Pod` are effectively behind NAT (Network Address
 Translation). Inside a `Pod` containers can rely on local DNS services to find hostnames in their own or external
 namespaces.
 
-Since networking and state is separate and atomic. We can run multiple replica's of the same 'Pod' and
+Since networking and state is separate and atomic. We can run multiple replica's of the same `Pod` and
 increase availability. Without the need to worry about state or networking changes when your containers start.
 
 ### Pods expose their ports to Services
 
-Services allow you to expose applications running on a set of 'Pod' replica's as a network service.
+Services allow you to expose applications running on a set of `Pod` replica's as a network service.
 Services are mostly abstraction/glue for 'Pods' and Ingress. They provide a stable endpoint for 'Pods' and Ingress to
 interconnect.
 
@@ -135,7 +135,7 @@ environments and refer to this config map's keys to provision your deployment an
 When you need to store sensitive information, such as passwords, OAuth tokens and SSH keys, use Secrets.
 If you need to store non-sensitive configuration data, use ConfigMaps.
 
-ConfigMaps and Secrets can be mounted as files or environment variables in a 'Pod'. Containers in a 'Pod' might need to
+ConfigMaps and Secrets can be mounted as files or environment variables in a `Pod`. Containers in a `Pod` might need to
 be
 drained/restarted to reload the latest environment configuration changes.
 
