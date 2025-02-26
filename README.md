@@ -152,7 +152,7 @@ along the way we'll be checking out multiple tools to configure your Kubernetes 
 - This workshop won't dive deep into Kubernetes, it will teach you some basics interactions with `Kubernetes` and how to
   deploy applications using `kubectl` and `ArgoCD`.
 
-Let's get started:s
+Let's get started:
 
 ### Clone the workshop repository
 
